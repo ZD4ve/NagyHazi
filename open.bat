@@ -1,1 +1,1 @@
-wsl code .
+wsl code ./GameofLife
