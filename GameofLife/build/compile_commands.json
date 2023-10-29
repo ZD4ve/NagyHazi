@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/mnt/c/FILES/Egyetem/1_szemeszter/PROGalap1/NagyHazi/GameofLife/build",
+  "command": "/usr/bin/gcc -g -o CMakeFiles/GameOfLife.dir/main.c.o -c /mnt/c/FILES/Egyetem/1_szemeszter/PROGalap1/NagyHazi/GameofLife/main.c",
+  "file": "/mnt/c/FILES/Egyetem/1_szemeszter/PROGalap1/NagyHazi/GameofLife/main.c"
+}
+]
