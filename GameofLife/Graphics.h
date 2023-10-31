@@ -1,3 +1,6 @@
+#ifndef GRAPHICS_H
+#define GRAPHICS_H
+
 #include <SDL2/SDL.h>
 
 typedef struct Gwindow{
@@ -8,3 +11,5 @@ typedef struct Gwindow{
 void Ginit();
 
 Gwindow Gnew(char title[],int width,int height);
+
+#endif
