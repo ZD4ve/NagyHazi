@@ -10,6 +10,7 @@
     "files.associations": {
         "*.cps": "javascript",
         "gamearea.h": "c",
-        "error.h": "c"
+        "error.h": "c",
+        "menu.h": "c"
     }
 }

@@ -2,15 +2,18 @@
 
 
 static void Mdrawtitle(Gwindow window){
-    (void)window;
+    Gprint_title(window,(SDL_Color){255,255,255,0});
 }
 static void Mdraw_background(Gwindow window){
     (void)window;
 }
-
-Gwindow Minit(){
-    Gwindow window = Gnew("Game Of Life by Zoller David",500,800);
+void Mdraw(Gwindow window){
     Mdraw_background(window);
     Mdrawtitle(window);
+    SDL_RenderPresent(window.ren);
+}
+Gwindow Minit(){
+    Gwindow window = Gnew("Game Of Life by Zoller David",500,800);
+    Mdraw(window);
     return window;
 }
