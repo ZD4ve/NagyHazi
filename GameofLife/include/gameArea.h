@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 #include <stdlib.h>  //DEBUGMALLOC!!
 
-#include "Error.h"
+#include "../include/Error.h"
 
 /**
  * @brief Játéktér és tulajdonságai

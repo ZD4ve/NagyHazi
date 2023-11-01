@@ -1,4 +1,4 @@
-#include "File.h"
+#include "../include/File.h"
 
 gameArea Fopen(char *path) {
     char err[] = "Serult fajl!";

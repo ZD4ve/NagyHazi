@@ -1,4 +1,4 @@
-#include "gameArea.h"
+#include "../include/gameArea.h"
 
 
 

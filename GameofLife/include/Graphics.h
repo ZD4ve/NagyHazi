@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 
-#include "Error.h"
+#include "../include/Error.h"
 
 typedef struct Gwindow{
     SDL_Window *win;

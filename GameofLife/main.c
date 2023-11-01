@@ -1,7 +1,7 @@
-#include "Error.h"
-#include "File.h"
-#include "Graphics.h"
-#include "gameArea.h"
+#include "include/Error.h"
+#include "include/File.h"
+#include "include/Graphics.h"
+#include "include/gameArea.h"
 
 int main(int argc, char *argv[]){
     (void)argc;

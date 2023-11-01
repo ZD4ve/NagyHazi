@@ -8,6 +8,7 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "*.c",
+                "source/*.c",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "-lSDL2",

@@ -1,7 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "Graphics.h"
+#include "../include/Graphics.h"
 
 Gwindow Minit();
 
