@@ -11,14 +11,14 @@
  * @details Létrehozni csak fügvénnyel szabad,
  * törlése kötelező az Afree fügvénnyel
  */
-typedef struct GameArea {
+typedef struct gameArea {
     size_t w;      // A játéktér szélessége
     size_t h;      // A játéktér magassága
     uint8_t **area;  // A játéktér tömbje
-} GameArea;
+} gameArea;
 
-GameArea Anew(size_t width, size_t height);
-void Aclear(GameArea gamearea);
-void Afree(GameArea *gamearea);
+gameArea Anew(size_t width, size_t height);
+void Aclear(gameArea gamearea);
+void Afree(gameArea *gamearea);
 
 #endif

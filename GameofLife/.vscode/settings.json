@@ -6,5 +6,10 @@
         "modernize-macro-to-enum",
         "llvm-header-guard",
         "clang-diagnostic-error"
-    ]
+    ],
+    "files.associations": {
+        "*.cps": "javascript",
+        "gamearea.h": "c",
+        "error.h": "c"
+    }
 }

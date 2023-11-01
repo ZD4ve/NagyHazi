@@ -2,9 +2,9 @@
 #define FILE_H
 
 #include "Error.h"
-#include "game_Area.h"
+#include "gameArea.h"
 
-GameArea Fopen(char *path);
-void Fsave(char *path, GameArea gamearea);
+gameArea Fopen(char *path);
+void Fsave(char *path, gameArea gamearea);
 
 #endif

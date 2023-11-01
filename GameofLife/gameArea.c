@@ -1,9 +1,9 @@
-#include "game_Area.h"
+#include "gameArea.h"
 
 
 
-GameArea Anew(size_t width, size_t height) {
-    GameArea new = {
+gameArea Anew(size_t width, size_t height) {
+    gameArea new = {
         .w = width,
         .h = height,
     };
@@ -16,7 +16,7 @@ GameArea Anew(size_t width, size_t height) {
     return new;
 }
 
-void Aclear(GameArea gamearea) {
+void Aclear(gameArea gamearea) {
     for (size_t x = 0; x < gamearea.w; x++) {
         for (size_t y = 0; y < gamearea.h; y++) {
             gamearea.area[x][y] = 0;
@@ -24,7 +24,7 @@ void Aclear(GameArea gamearea) {
     }
 }
 
-void Afree(GameArea *gamearea) {
+void Afree(gameArea *gamearea) {
     gamearea->h = 0;
     gamearea->w = 0;
     free(gamearea->area[0]);

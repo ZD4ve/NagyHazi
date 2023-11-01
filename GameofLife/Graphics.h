@@ -8,6 +8,7 @@
 typedef struct Gwindow{
     SDL_Window *win;
     SDL_Renderer *ren;
+    size_t w, h;
 } Gwindow;
 
 void Ginit();
