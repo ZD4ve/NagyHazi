@@ -1,6 +1,16 @@
 {
     "files.associations": {
         "*.cps": "javascript",
-        "sdl.h": "c"
-    }
+        "sdl.h": "c",
+        "error.h": "c",
+        "graphics.h": "c"
+    },
+    "C_Cpp.codeAnalysis.clangTidy.checks.disabled": [
+        "altera-unroll-loops",
+        "llvmlibc-restrict-system-libc-headers",
+        "clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling",
+        "modernize-macro-to-enum",
+        "llvm-header-guard",
+        "clang-diagnostic-error"
+    ]
 }

@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 
+#include "Error.h"
+
 typedef struct Gwindow{
     SDL_Window *win;
     SDL_Renderer *ren;
