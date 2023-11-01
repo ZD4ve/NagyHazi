@@ -1,10 +1,4 @@
 {
-    "files.associations": {
-        "*.cps": "javascript",
-        "sdl.h": "c",
-        "error.h": "c",
-        "graphics.h": "c"
-    },
     "C_Cpp.codeAnalysis.clangTidy.checks.disabled": [
         "altera-unroll-loops",
         "llvmlibc-restrict-system-libc-headers",

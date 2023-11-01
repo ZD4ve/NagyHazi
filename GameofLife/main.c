@@ -10,6 +10,7 @@ int main(int argc, char *argv[]){
     Ginit();
     Gwindow elso = Gnew("Teszt",250,500);
     GameArea be = Fopen("elso.con");
+    Fsave("copy.con",be);
     (void)elso;
     (void)be;
     
