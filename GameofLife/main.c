@@ -9,14 +9,15 @@ int main(int argc, char *argv[]){
     (void)argv;
 
     Ginit();
-    //Gwindow elso = Gnew("Teszt",250,500);
-    //gameArea be = Fopen("elso.con");
-    //Fsave("copy.con",be);
     Gwindow win = Minit();
-    //(void)elso;
-    //(void)be;
-    while(1);
-    
+
+    gameArea be = Fopen("elso.con");
+    Fsave("copy.con",be);
+    Afree(&be);
+
+    char tmp;
+    scanf("%c",&tmp);
+
     Gclose(win);
     Gquit();
     return 0;

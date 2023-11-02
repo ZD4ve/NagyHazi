@@ -2,9 +2,12 @@
 #define GAMEAREA_H
 
 #include <SDL2/SDL.h>
-#include <stdlib.h>  //DEBUGMALLOC!!
+#include <stdlib.h>
+
 
 #include "../include/Error.h"
+#include "../include/debugmalloc.h"
+
 
 /**
  * @brief Játéktér és tulajdonságai
