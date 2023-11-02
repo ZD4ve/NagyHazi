@@ -1,10 +1,11 @@
 #include "../include/Graphics.h"
 
+
 void Ginit() {
     ErrorIFtrue(SDL_Init(SDL_INIT_EVERYTHING) < 0, "Nem indithato az SDL!");
-    ErrorIFtrue(TTF_Init()<0,"TTF elinditasa sikertelen");
+    ErrorIFtrue(TTF_Init() < 0, "TTF elinditasa sikertelen");
 }
-void Gclose(Gwindow window){
+void Gclose(Gwindow window) {
     TTF_CloseFont(window.font_big);
     TTF_CloseFont(window.font_reg);
     SDL_DestroyRenderer(window.ren);
@@ -31,26 +32,48 @@ Gwindow Gnew(char title[], int width, int height) {
     return window;
 }
 
-static void Gprint_with_font(Gwindow window, char *text, SDL_Rect location, SDL_Color color, TTF_Font *font){
+
+
+
+
+
+static void set_color(Gwindow window, SDL_Color col) {
+    SDL_SetRenderDrawColor(window.ren, col.r, col.g, col.b, col.a);
+}
+
+static void Gprint_with_font(Gwindow window, char *text, SDL_Rect location, SDL_Color color, TTF_Font *font) {
     SDL_Surface *surface = TTF_RenderUTF8_Blended(font, text, color);
-    ErrorIFnull(surface,"Sikertelen surface render!");
+    ErrorIFnull(surface, "Sikertelen surface render!");
     SDL_Texture *texture = SDL_CreateTextureFromSurface(window.ren, surface);
-    ErrorIFnull(texture,"Sikertelen texture render!");
-    ErrorIFtrue(SDL_RenderCopy(window.ren, texture, NULL, &location)<0,"Sikertelen render!");
+    ErrorIFnull(texture, "Sikertelen texture render!");
+    ErrorIFtrue(SDL_RenderCopy(window.ren, texture, NULL, &location) < 0, "Sikertelen render!");
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
 }
 
-void Gprint(Gwindow window, char *text, SDL_Rect location) {
-    Gprint_with_font(window,text,location,window.colors.prim,window.font_reg);
+void Gprint(Gwindow window, char *text, SDL_Rect location, Colortype col) {
+    Gprint_with_font(window, text, location, col == primary ? window.colors.prim : window.colors.sec, window.font_reg);
 }
 
 void Gprint_title(Gwindow window) {
     char title[] = "Game of Life";
     SDL_Rect location;
-    ErrorIFtrue(TTF_SizeUTF8(window.font_big,title,&location.w,&location.h)<0,"TTF hiba!");
-    location.x = (window.w-location.w)/2;//kozepre rendezes
+    ErrorIFtrue(TTF_SizeUTF8(window.font_big, title, &location.w, &location.h) < 0, "TTF hiba!");
+    location.x = (window.w - location.w) / 2;  // kozepre rendezes
     location.y = 30;
-    Gprint_with_font(window,"Game of Life",location,window.colors.prim,window.font_big);
-
+    Gprint_with_font(window, "Game of Life", location, window.colors.prim, window.font_big);
 }
+
+void Grectwithborders(Gwindow window, SDL_Rect location, size_t border_width, Colortype col) {
+    set_color(window,col == primary ? window.colors.primacc: window.colors.secacc);
+    SDL_RenderFillRect(window.ren,&location);
+    location.x +=border_width;
+    location.y +=border_width;
+    location.w -=border_width*2;
+    location.h -=border_width*2;
+    set_color(window,col == primary ? window.colors.prim: window.colors.sec);
+    SDL_RenderFillRect(window.ren,&location);
+}
+
+//drawcell tombot kapjon (rect float), h0w0 ott ahol nem kell
+

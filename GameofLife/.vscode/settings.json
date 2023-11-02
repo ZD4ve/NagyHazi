@@ -12,6 +12,7 @@
         "gamearea.h": "c",
         "error.h": "c",
         "menu.h": "c",
-        "color.h": "c"
+        "color.h": "c",
+        "sdl_ttf.h": "c"
     }
 }

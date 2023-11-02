@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+typedef enum Colortype 
+{ 
+    primary, 
+    secondary
+} Colortype;
+
 typedef struct Color_theme {
     SDL_Color
         prim,

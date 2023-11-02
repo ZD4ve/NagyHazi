@@ -1,15 +1,20 @@
 #include "../include/Menu.h"
 
 
-static void Mdrawtitle(Gwindow window){
+static void draw_title(Gwindow window){
     Gprint_title(window);
 }
-static void Mdraw_background(Gwindow window){
+static void draw_background(Gwindow window){
     (void)window;
 }
 void Mdraw(Gwindow window){
-    Mdraw_background(window);
-    Mdrawtitle(window);
+    draw_background(window);
+    draw_title(window);
+    //TEST
+    SDL_Rect hova = {100,200,100,30};
+    Grectwithborders(window,hova,5,primary);
+
+    //END TEST
     SDL_RenderPresent(window.ren);
 }
 Gwindow Minit(){
