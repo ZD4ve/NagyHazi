@@ -17,7 +17,7 @@ int main(int argc, char *argv[]){
     //(void)be;
     while(1);
     
-
+    Gclose(win);
     Gquit();
     return 0;
 }

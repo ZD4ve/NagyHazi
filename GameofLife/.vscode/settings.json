@@ -11,6 +11,7 @@
         "*.cps": "javascript",
         "gamearea.h": "c",
         "error.h": "c",
-        "menu.h": "c"
+        "menu.h": "c",
+        "color.h": "c"
     }
 }

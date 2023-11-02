@@ -2,7 +2,7 @@
 
 
 static void Mdrawtitle(Gwindow window){
-    Gprint_title(window,(SDL_Color){255,255,255,0});
+    Gprint_title(window);
 }
 static void Mdraw_background(Gwindow window){
     (void)window;

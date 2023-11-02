@@ -1,20 +1,16 @@
 #include "../include/Graphics.h"
 
-static TTF_Font *Gfont_big;
-static TTF_Font *Gfont_reg;
-
 void Ginit() {
     ErrorIFtrue(SDL_Init(SDL_INIT_EVERYTHING) < 0, "Nem indithato az SDL!");
     ErrorIFtrue(TTF_Init()<0,"TTF elinditasa sikertelen");
-    Gfont_big = TTF_OpenFont("asset/PixelifySans.ttf", 48);
-    ErrorIFtrue(!Gfont_big, "Nem sikerult megnyitni a fontot!");
-    Gfont_reg = TTF_OpenFont("asset/PixelifySans.ttf", 20);
-    ErrorIFtrue(!Gfont_reg, "Nem sikerult megnyitni a fontot!");
 }
-
+void Gclose(Gwindow window){
+    TTF_CloseFont(window.font_big);
+    TTF_CloseFont(window.font_reg);
+    SDL_DestroyRenderer(window.ren);
+    SDL_DestroyWindow(window.win);
+}
 void Gquit() {
-    TTF_CloseFont(Gfont_big);
-    TTF_CloseFont(Gfont_reg);
     TTF_Quit();
     SDL_Quit();
 }
@@ -27,6 +23,11 @@ Gwindow Gnew(char title[], int width, int height) {
     ErrorIFnull(window.win, "Nem hozhato letre az ablak!");
     window.ren = SDL_CreateRenderer(window.win, -1, SDL_RENDERER_ACCELERATED);
     ErrorIFnull(window.ren, "Nem hozhato letre a megjelenito!");
+    window.font_big = TTF_OpenFont("asset/PixelifySans.ttf", 48);
+    ErrorIFtrue(!window.font_big, "Nem sikerult megnyitni a fontot!");
+    window.font_reg = TTF_OpenFont("asset/PixelifySans.ttf", 20);
+    ErrorIFtrue(!window.font_reg, "Nem sikerult megnyitni a fontot!");
+    window.colors = Cinit();
     return window;
 }
 
@@ -40,16 +41,16 @@ static void Gprint_with_font(Gwindow window, char *text, SDL_Rect location, SDL_
     SDL_DestroyTexture(texture);
 }
 
-void Gprint(Gwindow window, char *text, SDL_Rect location, SDL_Color color) {
-    Gprint_with_font(window,text,location,color,Gfont_reg);
+void Gprint(Gwindow window, char *text, SDL_Rect location) {
+    Gprint_with_font(window,text,location,window.colors.prim,window.font_reg);
 }
 
-void Gprint_title(Gwindow window, SDL_Color color) {
+void Gprint_title(Gwindow window) {
     char title[] = "Game of Life";
     SDL_Rect location;
-    ErrorIFtrue(TTF_SizeUTF8(Gfont_big,title,&location.w,&location.h)<0,"TTF hiba!");
+    ErrorIFtrue(TTF_SizeUTF8(window.font_big,title,&location.w,&location.h)<0,"TTF hiba!");
     location.x = (window.w-location.w)/2;//kozepre rendezes
     location.y = 30;
-    Gprint_with_font(window,"Game of Life",location,color,Gfont_big);
+    Gprint_with_font(window,"Game of Life",location,window.colors.prim,window.font_big);
 
 }
