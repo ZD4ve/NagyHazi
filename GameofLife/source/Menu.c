@@ -11,9 +11,11 @@ void Mdraw(Gwindow window){
     draw_background(window);
     draw_title(window);
     //TEST
-    SDL_Rect hova = {100,200,100,30};
-    Grectwithborders(window,hova,5,primary);
+    SDL_Rect hova1 = {100,200,100,30};
+    Grectwithborders(window,hova1,5,primary);
 
+    SDL_Rect hova2 = {100,250,100,30};
+    Grectwithborders(window,hova2,5,secondary);
     //END TEST
     SDL_RenderPresent(window.ren);
 }

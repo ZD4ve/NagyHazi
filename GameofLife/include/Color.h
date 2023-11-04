@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 typedef enum Colortype 
 { 
