@@ -1,27 +1,10 @@
 {
     "tasks": [
         {
-            "type": "cppbuild",
+            "type": "shell",
             "label": "C/C++: gcc build active file",
-            "command": "/usr/bin/gcc",
-            "args": [
-                "-fdiagnostics-color=always",
-                "-g",
-                "*.c",
-                "source/*.c",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}",
-                "-lSDL2",
-                "-lSDL2_gfx",
-                "-lSDL2_ttf",
-                "-lSDL2_image",
-                "-lSDL2_mixer",
-                "-lm",
-                "-Wall",
-                "-Werror",
-                "-Wextra",
-                "-Wpedantic"
-            ],
+            "command": "bash",
+            "args": ["build.sh"],
             "options": {
                 "cwd": "${workspaceFolder}"
             },

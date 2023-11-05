@@ -17,8 +17,6 @@ int main(int argc, char *argv[]) {
     // Fsave("copy.con",be);
     // Afree(&be);
 
-    // char tmp;
-    // scanf("%c",&tmp);
     SDL_Event e;
     bool quit = false;
     bool mouse_down = false;
