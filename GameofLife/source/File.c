@@ -34,3 +34,21 @@ void Fsave(char *path, gameArea gamearea) {
     }
     fclose(file);
 }
+
+size_t Flist(Fgame_file games[], size_t max_count){
+    DIR *mappa = opendir("saved");
+    size_t cnt = max_count;
+    for (size_t i = 0; i < max_count; i++)
+    {
+        struct dirent *fajl = readdir(mappa);
+        if(fajl == NULL) {
+            cnt = i;
+            break;
+        }
+        if(fajl->d_name[0]=='.'){--i; continue;}
+        games[i].path = (char*)malloc((strlen(fajl->d_name)+1)*sizeof(char));
+        strcpy(games[i].path,fajl->d_name);
+    }
+    closedir(mappa);
+    return cnt;
+}

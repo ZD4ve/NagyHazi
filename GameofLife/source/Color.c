@@ -2,8 +2,8 @@
 
 static SDL_Color HSLtoRGB(double H, double S, double L);
 static double eloszlas(double x) {
-    return x;
-    //return x * x * (x<0?-1:1);
+    //return x;
+    return x * x * (x<0?-1:1);
     //return x * x * x;  
 }
 

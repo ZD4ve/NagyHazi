@@ -26,7 +26,7 @@ Gwindow Gnew(char title[], int width, int height) {
     ErrorIFnull(window.ren, "Nem hozhato letre a megjelenito!");
     window.font_big = TTF_OpenFont("asset/PixelifySans.ttf", 48);
     ErrorIFtrue(!window.font_big, "Nem sikerult megnyitni a fontot!");
-    window.font_reg = TTF_OpenFont("asset/PixelifySans.ttf", 20);
+    window.font_reg = TTF_OpenFont("asset/PixelifySans.ttf", 24);
     ErrorIFtrue(!window.font_reg, "Nem sikerult megnyitni a fontot!");
     window.colors = Cinit();
     return window;
@@ -52,13 +52,16 @@ static void Gprint_with_font(Gwindow window, char *text, SDL_Rect location, SDL_
     ErrorIFnull(surface, "Sikertelen surface render!");
     SDL_Texture *texture = SDL_CreateTextureFromSurface(window.ren, surface);
     ErrorIFnull(texture, "Sikertelen texture render!");
+    location.y += (location.h-surface->h)/2;
+    location.w = surface->w;
+    location.h = surface->h;
     ErrorIFtrue(SDL_RenderCopy(window.ren, texture, NULL, &location) < 0, "Sikertelen render!");
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
 }
 
 void Gprint(Gwindow window, char *text, SDL_Rect location, Colortype col) {
-    Gprint_with_font(window, text, location, col == primary ? window.colors.prim : window.colors.sec, window.font_reg);
+    Gprint_with_font(window, text, location, col == primary ? window.colors.primacc : window.colors.secacc, window.font_reg);
 }
 
 void Gprint_title(Gwindow window) {
@@ -70,7 +73,7 @@ void Gprint_title(Gwindow window) {
     Gprint_with_font(window, "Game of Life", location, window.colors.prim, window.font_big);
 }
 
-void Grectwithborders(Gwindow window, SDL_Rect location, size_t border_width, Colortype col) {
+SDL_Rect Grectwithborders(Gwindow window, SDL_Rect location, size_t border_width, Colortype col) {
     set_color(window,col == primary ? window.colors.primacc: window.colors.secacc);
     SDL_RenderFillRect(window.ren,&location);
     location.x +=border_width;
@@ -79,6 +82,7 @@ void Grectwithborders(Gwindow window, SDL_Rect location, size_t border_width, Co
     location.h -=border_width*2;
     set_color(window,col == primary ? window.colors.prim: window.colors.sec);
     SDL_RenderFillRect(window.ren,&location);
+    return location;
 }
 
 //drawcell tombot kapjon (rect float), h0w0 ott ahol nem kell
