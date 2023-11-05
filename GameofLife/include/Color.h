@@ -17,7 +17,8 @@ typedef struct Color_theme {
         prim,
         primacc,
         sec,
-        secacc;
+        secacc,
+        bg;
 } Color_theme;
 
 Color_theme Cinit();

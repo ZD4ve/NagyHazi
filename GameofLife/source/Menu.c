@@ -5,7 +5,7 @@ static void draw_title(Gwindow window){
     Gprint_title(window);
 }
 static void draw_background(Gwindow window){
-    (void)window;
+    Gfill_background(window);
 }
 void Mdraw(Gwindow window){
     draw_background(window);

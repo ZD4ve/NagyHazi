@@ -1,8 +1,10 @@
 #include "../include/Color.h"
 
 static SDL_Color HSLtoRGB(double H, double S, double L);
-static double negyzetre(double x){
-    return x*x;
+static double eloszlas(double x) {
+    return x;
+    //return x * x * (x<0?-1:1);
+    //return x * x * x;  
 }
 
 Color_theme Cinit() {
@@ -10,7 +12,8 @@ Color_theme Cinit() {
     static double PrimHue = -1;
     if (PrimHue == -1) {
         srand(time(NULL));
-        PrimHue = (negyzetre((rand() / (double)RAND_MAX) * 13.4164))-90;//sqrt180 = 13.4164
+        PrimHue = 90 * eloszlas((rand() / (double)RAND_MAX) * 2 - 1) + 60;
+        // 60fokos offset szine generalasahoz
     }
 
     Color_theme new;
@@ -18,6 +21,7 @@ Color_theme Cinit() {
     new.primacc = HSLtoRGB(PrimHue, .6, .25);
     new.sec = HSLtoRGB(PrimHue + 180, 1, .65);
     new.secacc = HSLtoRGB(PrimHue + 180, .6, .25);
+    new.bg = HSLtoRGB(PrimHue + 180, .3, .15);
     return new;
 }
 
@@ -29,7 +33,7 @@ Color_theme Cinit() {
  * @details Equations from https://en.wikipedia.org/wiki/HSL_and_HSV
  */
 static SDL_Color HSLtoRGB(double H, double S, double L) {
-    while (H<0) H+=360;
+    while (H < 0) H += 360;
     H = fmod(H, 360.0);
     double C = (1 - fabs(2 * L - 1)) * S;
     double H1 = H / 60;

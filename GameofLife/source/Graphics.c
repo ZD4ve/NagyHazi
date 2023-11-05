@@ -41,6 +41,12 @@ static void set_color(Gwindow window, SDL_Color col) {
     SDL_SetRenderDrawColor(window.ren, col.r, col.g, col.b, col.a);
 }
 
+
+void Gfill_background(Gwindow window){
+    set_color(window, window.colors.bg);
+    SDL_RenderClear(window.ren);
+}
+
 static void Gprint_with_font(Gwindow window, char *text, SDL_Rect location, SDL_Color color, TTF_Font *font) {
     SDL_Surface *surface = TTF_RenderUTF8_Blended(font, text, color);
     ErrorIFnull(surface, "Sikertelen surface render!");

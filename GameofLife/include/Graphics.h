@@ -21,6 +21,7 @@ void Gclose(Gwindow window);
 void Gquit();
 
 Gwindow Gnew(char title[], int width, int height);
+void Gfill_background(Gwindow window);
 void Gprint(Gwindow window, char *text, SDL_Rect location, Colortype col);
 void Gprint_title(Gwindow window);
 void Grectwithborders(Gwindow window,SDL_Rect location, size_t border_width, Colortype col);

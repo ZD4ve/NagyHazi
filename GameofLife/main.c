@@ -10,13 +10,14 @@ int main(int argc, char *argv[]){
 
     Ginit();
     Gwindow win = Minit();
+    SDL_RenderPresent(win.ren);
+    SDL_Delay(5000);
+    //gameArea be = Fopen("elso.con");
+    //Fsave("copy.con",be);
+    //Afree(&be);
 
-    gameArea be = Fopen("elso.con");
-    Fsave("copy.con",be);
-    Afree(&be);
-
-    char tmp;
-    scanf("%c",&tmp);
+    //char tmp;
+    //scanf("%c",&tmp);
 
     Gclose(win);
     Gquit();
