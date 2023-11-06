@@ -5,8 +5,8 @@
 #include <stdlib.h>
 
 
-#include "../include/Error.h"
-#include "../include/debugmalloc.h"
+#include "Error.h"
+#include "debugmalloc.h"
 
 
 /**

@@ -5,8 +5,8 @@
 #include <dirent.h>
 #include <string.h>
 
-#include "../include/Error.h"
-#include "../include/gameArea.h"
+#include "Error.h"
+#include "gameArea.h"
 
 typedef struct Fgame_file{
     char *path;

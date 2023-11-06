@@ -4,8 +4,8 @@
 
 #include <SDL2/SDL.h>
 
-#include "../include/Graphics.h"
-#include "../include/File.h"
+#include "Graphics.h"
+#include "File.h"
 
 #define max_saves 10
 
