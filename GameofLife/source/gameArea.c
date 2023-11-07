@@ -1,11 +1,10 @@
 #include "../include/gamearea.h"
 
-
-
 gameArea Anew(size_t width, size_t height) {
     gameArea new = {
         .w = width,
         .h = height,
+        .history_lenght = 0,
     };
     new.area = (uint8_t **)malloc(width * sizeof(uint8_t *));
     ErrorIFnull(new.area, "Sikertelen memoria foglalas!");
@@ -32,10 +31,48 @@ void Afree(gameArea *gamearea) {
     gamearea->area = NULL;
 }
 
-size_t Agetage(uint8_t cell){
-    for (size_t i = 0; i < 8; i++)
-    {
-        if((cell & 1<<i) != 0) return i;
+size_t Agetage(uint8_t cell) {
+    for (size_t i = 0; i < 8; i++) {
+        if ((cell & 1 << i) != 0) return i;
     }
     return 9;
+}
+static bool isalive(uint8_t cell) {
+    // megnezzuk, hogy a masodik legkisseb helyirteken 1 van-e
+    return (cell >> 1) & 1;
+}
+void Astep(gameArea *A) {
+    for (size_t x = 0; x < A->w; x++) {
+        for (size_t y = 0; y < A->h; y++) {
+            A->area[x][y] << 1;
+        }
+    }
+    for (size_t x = 0; x < A->w; x++) {
+        for (size_t y = 0; y < A->h; y++) {
+            size_t sum = 0;
+            for (ssize_t x_offset = -1; x_offset <= 1; x_offset++) {
+                for (ssize_t y_offset = -1; y_offset <= 1; y_offset++) {
+                    if (x_offset == 0 && y_offset == 0) continue;
+                    sum += isalive(A->area[x + x_offset][y + y_offset]);
+                }
+            }
+            A->area[x][y] |= isalive(A->area[x][y]) ? (sum == 2 || sum == 3) : (sum == 3);
+        }
+    }
+    if (A->history_lenght != 7) A->history_lenght++;
+}
+bool Aback(gameArea *A) {
+    if (A->history_lenght == 0) return false;
+    for (size_t x = 0; x < A->w; x++) {
+        for (size_t y = 0; y < A->h; y++) {
+            A->area[x][y] >> 1;
+        }
+    }
+    if (A->history_lenght != 0) A->history_lenght--;
+    return true;
+}
+void Aflipcell(gameArea *A, size_t x, size_t y) {
+    ErrorIFtrue(x >= A->w || y >= A->h, "Cella lehelyezes nem letezo helyre!");
+    A->area[x][y] ^= 1;
+    A->history_lenght = 0;
 }

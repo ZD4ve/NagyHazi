@@ -4,7 +4,7 @@ gameWindow Winit(gameArea *A) {
     gameWindow new;
     new.A = *A;
     // new.G = uj ablak, ujrameretezheto
-    Gpre_render_cells(new.G);
+    Gpre_render_cells(&new.G);
     new.full_game = SDL_CreateTexture(new.G.ren, SDL_GetWindowPixelFormat(new.G.win), SDL_TEXTUREACCESS_TARGET, CELL_SIZE * new.A.w, CELL_SIZE * new.A.h);
     return new;
 }
@@ -12,7 +12,7 @@ void Wclose(gameWindow *game) {
     Afree(&game->A);
     SDL_DestroyTexture(game->pre_rendered_cells);
     SDL_DestroyTexture(game->full_game);
-    Gclose(game->G);
+    Gclose(&game->G);
 }
 
 void WdrawCells(gameWindow *game) {
