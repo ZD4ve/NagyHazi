@@ -1,10 +1,12 @@
 #include <stdbool.h>
 
+#include "include/Color.h"
 #include "include/Error.h"
-// #include "include/File.h"
+#include "include/File.h"
+#include "include/gameArea.h"
+#include "include/gameWindow.h"
 #include "include/Graphics.h"
 #include "include/Menu.h"
-#include "include/gameArea.h"
 
 int main(int argc, char *argv[]) {
     (void)argc;
@@ -31,7 +33,7 @@ int main(int argc, char *argv[]) {
                 if(!mouse_down){
                     mouse_down = true;
                     if(e.window.windowID == SDL_GetWindowID(M.G.win)){
-                        Mclick(M,e.motion.x,e.motion.y);
+                        Mclick(&M,e.motion.x,e.motion.y);
                     }
                 }
                 break;
@@ -40,7 +42,7 @@ int main(int argc, char *argv[]) {
                 break;
         }
     }
-    Mclose(M);
+    Mclose(&M);
     Gquit();
     return 0;
 }

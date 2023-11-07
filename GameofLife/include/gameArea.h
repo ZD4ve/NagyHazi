@@ -23,5 +23,7 @@ typedef struct gameArea {
 gameArea Anew(size_t width, size_t height);
 void Aclear(gameArea gamearea);
 void Afree(gameArea *gamearea);
+size_t Agetage(uint8_t cell);
+
 
 #endif

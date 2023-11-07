@@ -12,7 +12,8 @@ typedef struct gameWindow
     SDL_Texture *full_game;
 } gameWindow;
 
-gameWindow Winit(gameArea A);
-void Wclose(gameWindow W);
+gameWindow Winit(gameArea *A);
+void Wclose(gameWindow *W);
+void WdrawCells(gameWindow *game);
 
 #endif

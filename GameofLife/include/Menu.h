@@ -16,7 +16,7 @@ typedef struct Menu{
 } Menu;
 
 Menu Minit();
-void Mclose(Menu menu);
-void Mclick(Menu menu, int x, int y);
+void Mclose(Menu *menu);
+void Mclick(Menu *menu, int x, int y);
 
 #endif

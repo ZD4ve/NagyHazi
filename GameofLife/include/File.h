@@ -7,6 +7,8 @@
 
 #include "Error.h"
 #include "gameArea.h"
+#include "debugmalloc.h"
+
 
 typedef struct Fgame_file{
     char *path;

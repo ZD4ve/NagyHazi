@@ -22,13 +22,13 @@ gameArea Fopen(char *path) {
     fclose(file);
     return gamearea;
 }
-void Fsave(char *path, gameArea gamearea) {
+void Fsave(char *path, gameArea *gamearea) {
     FILE *file = fopen(path, "w");
     ErrorIFnull(file, "Nem sikerult menteni a fajlt!");
-    fprintf(file, "%lu %lu\n", gamearea.w, gamearea.h);
-    for (size_t y = 0; y < gamearea.h; y++) {
-        for (size_t x = 0; x < gamearea.w; x++) {
-            putc((gamearea.area[x][y] & 1u) == 0 ? '.' : 'O', file);
+    fprintf(file, "%lu %lu\n", gamearea->w, gamearea->h);
+    for (size_t y = 0; y < gamearea->h; y++) {
+        for (size_t x = 0; x < gamearea->w; x++) {
+            putc((gamearea->area[x][y] & 1u) == 0 ? '.' : 'O', file);
         }
         putc('\n', file);
     }

@@ -19,13 +19,13 @@ typedef struct Gwindow {
 } Gwindow;
 
 void Ginit();
-void Gclose(Gwindow window);
+void Gclose(Gwindow *window);
 void Gquit();
 
 Gwindow Gnew(char title[], int width, int height);
-void Gfill_background(Gwindow window);
-void Gprint(Gwindow window, char *text, SDL_Rect location, Colortype col);
-void Gprint_title(Gwindow window);
-SDL_Rect Grectwithborders(Gwindow window,SDL_Rect location, size_t border_width, Colortype col);
-SDL_Texture *Gpre_render_cells(Gwindow window);
+void Gfill_background(Gwindow *window);
+void Gprint(Gwindow *window, char *text, SDL_Rect *location, Colortype col);
+void Gprint_title(Gwindow *window);
+SDL_Rect Grectwithborders(Gwindow *window,SDL_Rect location, size_t border_width, Colortype col);
+SDL_Texture *Gpre_render_cells(Gwindow *window);
 #endif

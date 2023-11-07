@@ -1,4 +1,4 @@
-#include "../include/gameArea.h"
+#include "../include/gamearea.h"
 
 
 
@@ -16,10 +16,10 @@ gameArea Anew(size_t width, size_t height) {
     return new;
 }
 
-void Aclear(gameArea gamearea) {
-    for (size_t x = 0; x < gamearea.w; x++) {
-        for (size_t y = 0; y < gamearea.h; y++) {
-            gamearea.area[x][y] = 0;
+void Aclear(gameArea *gamearea) {
+    for (size_t x = 0; x < gamearea->w; x++) {
+        for (size_t y = 0; y < gamearea->h; y++) {
+            gamearea->area[x][y] = 0;
         }
     }
 }
@@ -30,4 +30,12 @@ void Afree(gameArea *gamearea) {
     free(gamearea->area[0]);
     free(gamearea->area);
     gamearea->area = NULL;
+}
+
+size_t Agetage(uint8_t cell){
+    for (size_t i = 0; i < 8; i++)
+    {
+        if((cell & 1<<i) != 0) return i;
+    }
+    return 9;
 }
