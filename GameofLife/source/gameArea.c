@@ -41,6 +41,10 @@ static bool isalive(uint8_t cell) {
     // megnezzuk, hogy a masodik legkisseb helyirteken 1 van-e
     return (cell >> 1) & 1;
 }
+static bool isvaidcord(ssize_t x, ssize_t y, size_t w, size_t h) {
+    return 0 <= x && x < w &&
+           0 <= y && y < h;
+}
 void Astep(gameArea *A) {
     for (size_t x = 0; x < A->w; x++) {
         for (size_t y = 0; y < A->h; y++) {
@@ -53,7 +57,8 @@ void Astep(gameArea *A) {
             for (ssize_t x_offset = -1; x_offset <= 1; x_offset++) {
                 for (ssize_t y_offset = -1; y_offset <= 1; y_offset++) {
                     if (x_offset == 0 && y_offset == 0) continue;
-                    sum += isalive(A->area[x + x_offset][y + y_offset]);
+                    sum += isvaidcord(x + x_offset, y + y_offset, A->w, A->h) &&
+                           isalive(A->area[x + x_offset][y + y_offset]);
                 }
             }
             A->area[x][y] |= isalive(A->area[x][y]) ? (sum == 2 || sum == 3) : (sum == 3);
