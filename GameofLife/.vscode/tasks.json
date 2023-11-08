@@ -1,8 +1,8 @@
 {
     "tasks": [
         {
+            "label": "build",
             "type": "shell",
-            "label": "C/C++: gcc build active file",
             "command": "bash",
             "args": ["build.sh"],
             "options": {

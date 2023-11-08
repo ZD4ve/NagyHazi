@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
@@ -22,7 +23,8 @@ void Ginit();
 void Gclose(Gwindow *window);
 void Gquit();
 
-Gwindow Gnew(char title[], int width, int height);
+Gwindow Gnew(char title[], int width, int height, bool resizable);
+void Gset_color(Gwindow *window, SDL_Color col);
 void Gfill_background(Gwindow *window);
 void Gprint(Gwindow *window, char *text, SDL_Rect *location, Colortype col);
 void Gprint_title(Gwindow *window);

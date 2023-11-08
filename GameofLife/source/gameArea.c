@@ -33,22 +33,22 @@ void Afree(gameArea *gamearea) {
 
 size_t Agetage(uint8_t cell) {
     for (size_t i = 0; i < 8; i++) {
-        if ((cell & 1 << i) != 0) return i;
+        if ((cell & (1 << i)) != 0) return i;
     }
-    return 9;
+    return 8;
 }
 static bool isalive(uint8_t cell) {
     // megnezzuk, hogy a masodik legkisseb helyirteken 1 van-e
     return (cell >> 1) & 1;
 }
 static bool isvaidcord(ssize_t x, ssize_t y, size_t w, size_t h) {
-    return 0 <= x && x < w &&
-           0 <= y && y < h;
+    return 0 <= x && (size_t)x < w &&
+           0 <= y && (size_t)y < h;
 }
 void Astep(gameArea *A) {
     for (size_t x = 0; x < A->w; x++) {
         for (size_t y = 0; y < A->h; y++) {
-            A->area[x][y] << 1;
+            A->area[x][y] <<= 1;
         }
     }
     for (size_t x = 0; x < A->w; x++) {
@@ -70,14 +70,15 @@ bool Aback(gameArea *A) {
     if (A->history_lenght == 0) return false;
     for (size_t x = 0; x < A->w; x++) {
         for (size_t y = 0; y < A->h; y++) {
-            A->area[x][y] >> 1;
+            A->area[x][y] >>= 1;
         }
     }
     if (A->history_lenght != 0) A->history_lenght--;
     return true;
 }
-void Aflipcell(gameArea *A, size_t x, size_t y) {
-    ErrorIFtrue(x >= A->w || y >= A->h, "Cella lehelyezes nem letezo helyre!");
+void Aflipcell(gameArea *A, ssize_t x, ssize_t y) {
+    if(x >= (ssize_t)A->w || y >= (ssize_t)A->h || x<0 || y<0) return;
+    //ErrorIFtrue(x >= A->w || y >= A->h || x<0 || y<0, "Cella lehelyezes nem letezo helyre!");
     A->area[x][y] ^= 1;
     A->history_lenght = 0;
 }

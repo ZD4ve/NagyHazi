@@ -35,7 +35,7 @@ static bool is_in_rect(int x, int y, SDL_Rect r){
 
 Menu Minit() {
     Menu menu;
-    menu.G = Gnew("Game Of Life by Zoller David", 500, 800);
+    menu.G = Gnew("Game Of Life by Zoller David", 500, 800,false);
     menu.saves = (Fgame_file*)malloc(max_saves*sizeof(Fgame_file));
     menu.save_cnt = Flist(menu.saves, max_saves);
     draw(&menu);

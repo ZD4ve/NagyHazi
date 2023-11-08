@@ -22,11 +22,11 @@ typedef struct gameArea {
 } gameArea;
 
 gameArea Anew(size_t width, size_t height);
-void Aclear(gameArea gamearea);
+void Aclear(gameArea *gamearea);
 void Afree(gameArea *gamearea);
 size_t Agetage(uint8_t cell);
 void Astep(gameArea *A);
 bool Aback(gameArea *A);
-void Aflipcell(gameArea *A, size_t x, size_t y);
+void Aflipcell(gameArea *A, ssize_t x, ssize_t y);
 
 #endif

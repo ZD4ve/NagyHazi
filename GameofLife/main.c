@@ -15,9 +15,11 @@ int main(int argc, char *argv[]) {
     Ginit();
     Menu M = Minit();
     SDL_RenderPresent(M.G.ren);
-    // gameArea be = Fopen("elso.con");
+    gameArea be = Fopen("saved/elso.con");
+    gameWindow test = Winit(&be,"elso");
+    WdrawCells(&test);
+    Wrendercells(&test);
     // Fsave("copy.con",be);
-    // Afree(&be);
 
     SDL_Event e;
     bool quit = false;
@@ -26,14 +28,19 @@ int main(int argc, char *argv[]) {
         SDL_WaitEvent(&e);
         switch (e.type) {
             case SDL_WINDOWEVENT:
-                if(e.window.event == SDL_WINDOWEVENT_CLOSE)
-                quit = true;
+                if(e.window.event == SDL_WINDOWEVENT_CLOSE) quit = true;
+                if(e.window.event == SDL_WINDOWEVENT_RESIZED){
+                    Wrendercells(&test);
+                }
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 if(!mouse_down){
                     mouse_down = true;
                     if(e.window.windowID == SDL_GetWindowID(M.G.win)){
                         Mclick(&M,e.motion.x,e.motion.y);
+                    }
+                    if(e.window.windowID == SDL_GetWindowID(test.G.win)){
+                        Wclick(&test,e.motion.x,e.motion.y);
                     }
                 }
                 break;
@@ -42,6 +49,7 @@ int main(int argc, char *argv[]) {
                 break;
         }
     }
+    Wclose(&test);
     Mclose(&M);
     Gquit();
     return 0;

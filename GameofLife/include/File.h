@@ -16,7 +16,7 @@ typedef struct Fgame_file{
 } Fgame_file;
 
 gameArea Fopen(char *path);
-void Fsave(char *path, gameArea gamearea);
+void Fsave(char *path, gameArea *gamearea);
 size_t Flist(Fgame_file games[], size_t max_count);
 
 #endif

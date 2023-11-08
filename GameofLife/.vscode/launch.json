@@ -6,6 +6,7 @@
     "configurations": [
         {
             "name": "Launch Program",
+            "preLaunchTask": "build",
             "program": "${workspaceFolder}/main",
             "request": "launch",
             "type": "cppdbg",
