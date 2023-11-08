@@ -55,23 +55,34 @@ int main(int argc, char *argv[]) {
                 break;
             case SDL_KEYDOWN:
                 switch (e.key.keysym.scancode) {
-                    //space
+                    // space
                     case SDL_SCANCODE_RIGHT:
-                        if(pressed[2]) break;
+                        if (pressed[2]) break;
                         pressed[2] = true;
                         Astep(&test.A);
                         Wdraw(&test, true);
                         break;
-                    default: break;
+                    case SDL_SCANCODE_LEFT:
+                        if (pressed[3]) break;
+                        pressed[3] = true;
+                        Aback(&test.A);
+                        Wdraw(&test, true);
+                        break;
+                    default:
+                        break;
                 }
                 break;
             case SDL_KEYUP:
                 switch (e.key.keysym.scancode) {
-                    //space
+                    // space
                     case SDL_SCANCODE_RIGHT:
                         pressed[2] = false;
                         break;
-                    default: break;
+                    case SDL_SCANCODE_LEFT:
+                        pressed[3] = false;
+                        break;
+                    default:
+                        break;
                 }
         }
     }
