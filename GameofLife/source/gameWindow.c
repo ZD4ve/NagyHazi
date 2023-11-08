@@ -8,11 +8,11 @@ gameWindow Winit(gameArea *A, char *name) {
     new.A = *A;
     new.name = name;
     new.G = Gnew(new.name, DEFAULT_WIDTH, DEFAULT_HEIGHT, true);
-    new.zoom = 15;
+    new.zoom = 10;
     new.texture_w = CELL_SIZE *new.A.w;
     new.texture_h = CELL_SIZE *new.A.h;
-    new.center_x = new.texture_w / 2.0-20;
-    new.center_y = new.texture_h / 2.0+20;
+    new.center_x = new.texture_w / 2.0;
+    new.center_y = new.texture_h / 2.0;
     new.pre_rendered_cells = Gpre_render_cells(&new.G);
     new.full_game = SDL_CreateTexture(new.G.ren, SDL_GetWindowPixelFormat(new.G.win), SDL_TEXTUREACCESS_TARGET, new.texture_w, new.texture_h);
     return new;
@@ -30,11 +30,10 @@ void Wclick(gameWindow *game, int x, int y) {
     Aflipcell(&game->A,
               ((x-win_w/2)/game->zoom+game->center_x)/CELL_SIZE,
               ((y-win_h/2)/game->zoom+game->center_y)/CELL_SIZE);
-    WdrawCells(game);
-    Wrendercells(game);
+    Wdraw(game,true);
 }
 
-void WdrawCells(gameWindow *game) {
+static void drawcells(gameWindow *game) {
     SDL_SetRenderTarget(game->G.ren, game->full_game);
     SDL_Rect target = {0, 0, CELL_SIZE, CELL_SIZE};
     SDL_Rect source = {0, 0, CELL_SIZE, CELL_SIZE};
@@ -49,7 +48,7 @@ void WdrawCells(gameWindow *game) {
     SDL_RenderPresent(game->G.ren);
     SDL_SetRenderTarget(game->G.ren, NULL);
 }
-void Wrendercells(gameWindow *game) {
+static void rendercells(gameWindow *game) {
     Gset_color(&game->G, game->G.colors.bg);
     SDL_RenderClear(game->G.ren);
     SDL_Rect target = {.x = 0, .y = 0};
@@ -79,4 +78,8 @@ void Wrendercells(gameWindow *game) {
     }
     SDL_RenderCopy(game->G.ren, game->full_game, &source, &target);
     SDL_RenderPresent(game->G.ren);
+}
+void Wdraw(gameWindow *game, bool valtozott_adat){
+    if(valtozott_adat) drawcells(game);
+    rendercells(game);
 }

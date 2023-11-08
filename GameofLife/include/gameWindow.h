@@ -1,6 +1,7 @@
 #ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
 
+#include <stdbool.h>
 #include "Graphics.h"
 #include "gameArea.h"
 
@@ -20,6 +21,5 @@ typedef struct gameWindow {
 gameWindow Winit(gameArea *A, char *name);
 void Wclose(gameWindow *game);
 void Wclick(gameWindow *game, int x, int y);
-void WdrawCells(gameWindow *game);
-void Wrendercells(gameWindow *game);
+void Wdraw(gameWindow *game, bool valtozott_adat);
 #endif

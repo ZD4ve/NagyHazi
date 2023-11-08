@@ -76,9 +76,9 @@ bool Aback(gameArea *A) {
     if (A->history_lenght != 0) A->history_lenght--;
     return true;
 }
-void Aflipcell(gameArea *A, ssize_t x, ssize_t y) {
-    if(x >= (ssize_t)A->w || y >= (ssize_t)A->h || x<0 || y<0) return;
+void Aflipcell(gameArea *A, double x, double y) {
+    if(x >= (double)A->w || y >= (double)A->h || x<0 || y<0) return;
     //ErrorIFtrue(x >= A->w || y >= A->h || x<0 || y<0, "Cella lehelyezes nem letezo helyre!");
-    A->area[x][y] ^= 1;
+    A->area[(int)x][(int)y] ^= 1;
     A->history_lenght = 0;
 }

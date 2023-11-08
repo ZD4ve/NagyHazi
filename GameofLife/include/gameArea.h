@@ -27,6 +27,6 @@ void Afree(gameArea *gamearea);
 size_t Agetage(uint8_t cell);
 void Astep(gameArea *A);
 bool Aback(gameArea *A);
-void Aflipcell(gameArea *A, ssize_t x, ssize_t y);
+void Aflipcell(gameArea *A, double x, double y);
 
 #endif
