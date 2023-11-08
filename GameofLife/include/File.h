@@ -9,6 +9,7 @@
 #include "gameArea.h"
 #include "debugmalloc.h"
 
+#define SAVES_FOLDER "saved/"
 
 typedef struct Fgame_file{
     char *path;

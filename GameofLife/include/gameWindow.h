@@ -22,4 +22,5 @@ gameWindow Winit(gameArea *A, char *name);
 void Wclose(gameWindow *game);
 void Wclick(gameWindow *game, int x, int y);
 void Wdraw(gameWindow *game, bool valtozott_adat);
+void Wzoom(gameWindow *game, double wheel, int x, int y);
 #endif

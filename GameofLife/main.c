@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
     Menu M = Minit();
     SDL_RenderPresent(M.G.ren);
     gameArea be = Fopen("saved/test.con");
-    gameWindow test = Winit(&be, "elso");
+    gameWindow test = Winit(&be, "test");
     Wdraw(&test, true);
     // Fsave("copy.con",be);
 
@@ -36,6 +36,9 @@ int main(int argc, char *argv[]) {
         switch (e.type) {
             case SDL_WINDOWEVENT:
                 if (e.window.event == SDL_WINDOWEVENT_CLOSE) quit = true;
+                //TODO: ablak vizsgalat
+                //X menu: mindent bezar
+                //X game: csak a jatekot zarja be;
                 if (e.window.event == SDL_WINDOWEVENT_RESIZED) {
                     Wdraw(&test, false);
                 }
@@ -50,12 +53,8 @@ int main(int argc, char *argv[]) {
                     Wclick(&test, e.motion.x, e.motion.y);
                 }
                 break;
-            case SDL_MOUSEBUTTONUP:
-                pressed[0] = false;
-                break;
             case SDL_KEYDOWN:
                 switch (e.key.keysym.scancode) {
-                    // space
                     case SDL_SCANCODE_RIGHT:
                         if (pressed[2]) break;
                         pressed[2] = true;
@@ -72,9 +71,17 @@ int main(int argc, char *argv[]) {
                         break;
                 }
                 break;
+            case SDL_MOUSEWHEEL:
+                if (e.window.windowID != SDL_GetWindowID(test.G.win)) break;
+                int mouse_x, mouse_y;
+                SDL_GetMouseState(&mouse_x, &mouse_y);
+                Wzoom(&test, e.wheel.preciseY, mouse_x, mouse_y);
+                break;
+            case SDL_MOUSEBUTTONUP:
+                pressed[0] = false;
+                break;
             case SDL_KEYUP:
                 switch (e.key.keysym.scancode) {
-                    // space
                     case SDL_SCANCODE_RIGHT:
                         pressed[2] = false;
                         break;

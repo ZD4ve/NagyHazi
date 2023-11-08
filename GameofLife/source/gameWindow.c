@@ -28,9 +28,9 @@ void Wclick(gameWindow *game, int x, int y) {
     int win_w, win_h;
     SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h);
     Aflipcell(&game->A,
-              ((x-win_w/2)/game->zoom+game->center_x)/CELL_SIZE,
-              ((y-win_h/2)/game->zoom+game->center_y)/CELL_SIZE);
-    Wdraw(game,true);
+              ((x - win_w / 2) / game->zoom + game->center_x) / CELL_SIZE,
+              ((y - win_h / 2) / game->zoom + game->center_y) / CELL_SIZE);
+    Wdraw(game, true);
 }
 
 static void drawcells(gameWindow *game) {
@@ -51,8 +51,9 @@ static void drawcells(gameWindow *game) {
 static void rendercells(gameWindow *game) {
     Gset_color(&game->G, game->G.colors.bg);
     SDL_RenderClear(game->G.ren);
-    SDL_Rect target = {.x = 0, .y = 0};
-    SDL_GetRendererOutputSize(game->G.ren, &target.w, &target.h);
+    int win_w, win_h;
+    SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h);
+    SDL_Rect target = {0, 0, win_w, win_h};
     SDL_Rect source;
     source.w = target.w / game->zoom;
     source.h = target.h / game->zoom;
@@ -68,18 +69,26 @@ static void rendercells(gameWindow *game) {
         target.h += source.y * game->zoom;
         source.y = 0;
     }
-    if ((source.x + source.w) > (int)game->texture_w) {
+    if ((source.x + source.w) > (ssize_t)game->texture_w) {
         source.w = (game->texture_w - source.x);
         target.w = (game->texture_w - source.x) * game->zoom;
     }
-    if ((source.y + source.h) > (int)game->texture_h) {
+    if ((source.y + source.h) > (ssize_t)game->texture_h) {
         source.h = (game->texture_h - source.y);
         target.h = (game->texture_h - source.y) * game->zoom;
     }
     SDL_RenderCopy(game->G.ren, game->full_game, &source, &target);
     SDL_RenderPresent(game->G.ren);
 }
-void Wdraw(gameWindow *game, bool valtozott_adat){
-    if(valtozott_adat) drawcells(game);
+void Wdraw(gameWindow *game, bool valtozott_adat) {
+    if (valtozott_adat) drawcells(game);
     rendercells(game);
+}
+void Wzoom(gameWindow *game, double wheel, int x, int y) {
+    int win_w, win_h;
+    SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h);
+    game->center_x += 0.1 * wheel * (x - win_w / 2) / game->zoom;
+    game->center_y += 0.1 * wheel * (y - win_h / 2) / game->zoom;
+    game->zoom *= 1 + 0.1 * wheel;
+    Wdraw(game, false);
 }
