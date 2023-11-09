@@ -9,6 +9,8 @@ void Gclose(Gwindow *window) {
     TTF_CloseFont(window->font_reg);
     SDL_DestroyRenderer(window->ren);
     SDL_DestroyWindow(window->win);
+    window->ren = NULL;
+    window->win = NULL;
 }
 void Gquit() {
     TTF_Quit();

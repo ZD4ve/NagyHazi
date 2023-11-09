@@ -15,14 +15,12 @@ int main(int argc, char *argv[]) {
     Ginit();
     Menu M = Minit();
     SDL_RenderPresent(M.G.ren);
-    gameArea be = Fopen("saved/test.con");
-    gameWindow test = Winit(&be, "test");
-    Wdraw(&test, true);
-    // Fsave("copy.con",be);
+
 
     SDL_Event e;
     bool quit = false;
-    bool pressed[5] = {0};
+    bool pressed[7] = {0};
+    int mouse_x, mouse_y;
     /*
     0 - eger
     1 - space
@@ -30,27 +28,30 @@ int main(int argc, char *argv[]) {
     3 - bal
     4 - fel
     5 - le
+    6 - ctrl
+    7 - s
     */
     while (!quit) {
         SDL_WaitEvent(&e);
+        SDL_GetMouseState(&mouse_x, &mouse_y);
         switch (e.type) {
             case SDL_WINDOWEVENT:
-                if (e.window.event == SDL_WINDOWEVENT_CLOSE) quit = true;
-                //TODO: ablak vizsgalat
-                //X menu: mindent bezar
-                //X game: csak a jatekot zarja be;
+                if (e.window.event == SDL_WINDOWEVENT_CLOSE){
+                    if(e.window.windowID == SDL_GetWindowID(M.G.win)) quit = true;
+                    if(e.window.windowID == SDL_GetWindowID(M.game_open.G.win)) Mclose_game(&M);
+                }
                 if (e.window.event == SDL_WINDOWEVENT_RESIZED) {
-                    Wdraw(&test, false);
+                    Wdraw(&M.game_open);
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 if (pressed[0]) break;
                 pressed[0] = true;
                 if (e.window.windowID == SDL_GetWindowID(M.G.win)) {
-                    Mclick(&M, e.motion.x, e.motion.y);
+                    Mclick(&M, mouse_x, mouse_y);
                 }
-                if (e.window.windowID == SDL_GetWindowID(test.G.win)) {
-                    Wclick(&test, e.motion.x, e.motion.y);
+                if (e.window.windowID == SDL_GetWindowID(M.game_open.G.win)) {
+                    Wclick(&M.game_open, mouse_x, mouse_y);
                 }
                 break;
             case SDL_KEYDOWN:
@@ -58,24 +59,31 @@ int main(int argc, char *argv[]) {
                     case SDL_SCANCODE_RIGHT:
                         if (pressed[2]) break;
                         pressed[2] = true;
-                        Astep(&test.A);
-                        Wdraw(&test, true);
+                        Astep(&M.game_open.A);
+                        Wdraw(&M.game_open);
                         break;
                     case SDL_SCANCODE_LEFT:
                         if (pressed[3]) break;
                         pressed[3] = true;
-                        Aback(&test.A);
-                        Wdraw(&test, true);
+                        Aback(&M.game_open.A);
+                        Wdraw(&M.game_open);
+                        break;
+                    case SDL_SCANCODE_RCTRL:
+                    case SDL_SCANCODE_LCTRL:
+                        pressed[6] = true;
+                        break;
+                    case SDL_SCANCODE_S:
+                        if (pressed[7]) break;
+                        pressed[7] = true;
+                        if(pressed[6]) Msave_game(&M);
                         break;
                     default:
                         break;
                 }
                 break;
             case SDL_MOUSEWHEEL:
-                if (e.window.windowID != SDL_GetWindowID(test.G.win)) break;
-                int mouse_x, mouse_y;
-                SDL_GetMouseState(&mouse_x, &mouse_y);
-                Wzoom(&test, e.wheel.preciseY, mouse_x, mouse_y);
+                if (e.window.windowID != SDL_GetWindowID(M.game_open.G.win)) break;
+                Wzoom(&M.game_open, e.wheel.preciseY, mouse_x, mouse_y);
                 break;
             case SDL_MOUSEBUTTONUP:
                 pressed[0] = false;
@@ -88,12 +96,18 @@ int main(int argc, char *argv[]) {
                     case SDL_SCANCODE_LEFT:
                         pressed[3] = false;
                         break;
+                    case SDL_SCANCODE_RCTRL:
+                    case SDL_SCANCODE_LCTRL:
+                        pressed[6] = false;
+                        break;
+                    case SDL_SCANCODE_S:
+                        pressed[7] = false;
+                        break;
                     default:
                         break;
                 }
         }
     }
-    Wclose(&test);
     Mclose(&M);
     Gquit();
     return 0;

@@ -53,9 +53,10 @@ size_t Flist(Fgame_file games[], size_t max_count) {
         if (cnt == max_count) break;
         size_t len = strlen(fajl->d_name);
         if (len > 4 && strcmp((fajl->d_name) + len - 4, ".con") == 0) {
-            games[cnt].path = (char *)malloc((len + 1 - 4) * sizeof(char));
-            strncpy(games[cnt].path, fajl->d_name, len - 4);
-            games[cnt].path[len - 4] = '\0';
+            games[cnt].path = (char *)malloc((len + 1/* - 4*/) * sizeof(char));
+            strcpy(games[cnt].path,fajl->d_name);
+            /*strncpy(games[cnt].path, fajl->d_name, len - 4);
+            games[cnt].path[len - 4] = '\0';*/
             cnt++;
         }
         fajl = readdir(mappa);

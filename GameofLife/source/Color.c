@@ -38,7 +38,7 @@ static SDL_Color HSLtoRGB(double H, double S, double L) {
     double C = (1 - fabs(2 * L - 1)) * S;
     double H1 = H / 60;
     double X = C * (1 - fabs(fmod(H1, 2.0) - 1));
-    double R1, G1, B1;
+    double R1 = 0, G1 = 0, B1 = 0;
     switch ((int)H1) {
         case 0:
             R1 = C;

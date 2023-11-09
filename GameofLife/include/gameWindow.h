@@ -14,13 +14,13 @@ typedef struct gameWindow {
     size_t texture_w;
     size_t texture_h;
     double zoom;
-    double center_x;
-    double center_y;
+    ssize_t x_screen_offset;
+    ssize_t y_screen_offset;
 } gameWindow;
 
-gameWindow Winit(gameArea *A, char *name);
+gameWindow Winit(gameArea A, char *name);
 void Wclose(gameWindow *game);
 void Wclick(gameWindow *game, int x, int y);
-void Wdraw(gameWindow *game, bool valtozott_adat);
+void Wdraw(gameWindow *game);
 void Wzoom(gameWindow *game, double wheel, int x, int y);
 #endif

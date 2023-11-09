@@ -3,18 +3,23 @@
 #define DEFAULT_WIDTH 1000
 #define DEFAULT_HEIGHT 500
 
-gameWindow Winit(gameArea *A, char *name) {
+static double kissebb(double a, double b) {
+    return a < b ? a : b;
+}
+
+gameWindow Winit(gameArea A, char *name) {
     gameWindow new;
-    new.A = *A;
+    new.A = A;
     new.name = name;
     new.G = Gnew(new.name, DEFAULT_WIDTH, DEFAULT_HEIGHT, true);
-    new.zoom = 10;
-    new.texture_w = CELL_SIZE *new.A.w;
-    new.texture_h = CELL_SIZE *new.A.h;
-    new.center_x = new.texture_w / 2.0;
-    new.center_y = new.texture_h / 2.0;
+    new.texture_w = new.A.w *CELL_SIZE;
+    new.texture_h = new.A.h *CELL_SIZE;
+    new.x_screen_offset = 0;
+    new.y_screen_offset = 0;
+    new.zoom = kissebb(DEFAULT_WIDTH / (double)new.texture_w, DEFAULT_HEIGHT / (double)new.texture_h);
     new.pre_rendered_cells = Gpre_render_cells(&new.G);
     new.full_game = SDL_CreateTexture(new.G.ren, SDL_GetWindowPixelFormat(new.G.win), SDL_TEXTUREACCESS_TARGET, new.texture_w, new.texture_h);
+    Wdraw(&new);
     return new;
 }
 void Wclose(gameWindow *game) {
@@ -24,71 +29,55 @@ void Wclose(gameWindow *game) {
     Gclose(&game->G);
 }
 
-void Wclick(gameWindow *game, int x, int y) {
-    int win_w, win_h;
-    SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h);
-    Aflipcell(&game->A,
-              ((x - win_w / 2) / game->zoom + game->center_x) / CELL_SIZE,
-              ((y - win_h / 2) / game->zoom + game->center_y) / CELL_SIZE);
-    Wdraw(game, true);
+static SDL_FPoint map_screen_to_game(gameWindow *game, SDL_FPoint screen_point) {
+    return (SDL_FPoint){
+        .x = (screen_point.x - game->x_screen_offset) / (CELL_SIZE * game->zoom),
+        .y = (screen_point.y - game->y_screen_offset) / (CELL_SIZE * game->zoom)};
+}
+static SDL_FPoint map_game_to_screen(gameWindow *game, SDL_FPoint game_point) {
+    return (SDL_FPoint){
+        .x = ((game_point.x * CELL_SIZE * game->zoom) + game->x_screen_offset),
+        .y = ((game_point.y * CELL_SIZE * game->zoom) + game->y_screen_offset)};
 }
 
-static void drawcells(gameWindow *game) {
-    SDL_SetRenderTarget(game->G.ren, game->full_game);
-    SDL_Rect target = {0, 0, CELL_SIZE, CELL_SIZE};
+void Wclick(gameWindow *game, int x, int y) {
+    // int win_w, win_h;
+    // SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h);
+    /*Aflipcell(&game->A,
+              ((x - win_w / 2) / game->zoom + game->center_x) / CELL_SIZE,
+              ((y - win_h / 2) / game->zoom + game->center_y) / CELL_SIZE);
+    */
+    SDL_FPoint pont = map_screen_to_game(game, (SDL_FPoint){(float)x, (float)y});
+    Aflipcell(&game->A, pont.x, pont.y);
+    Wdraw(game);
+}
+
+void Wdraw(gameWindow *game) {
+    Gset_color(&game->G, game->G.colors.bg);
+    SDL_RenderClear(game->G.ren);
+    SDL_FPoint target_point = {0.0, 0.0};
+    SDL_Rect target = {0, 0, CELL_SIZE * game->zoom + 1, CELL_SIZE * game->zoom + 1};
     SDL_Rect source = {0, 0, CELL_SIZE, CELL_SIZE};
     for (size_t x = 0; x < game->A.w; x++) {
         for (size_t y = 0; y < game->A.h; y++) {
             source.x = CELL_SIZE * Agetage(game->A.area[x][y]);
-            target.x = x * CELL_SIZE;
-            target.y = y * CELL_SIZE;
+            target_point = map_game_to_screen(game, (SDL_FPoint){x, y});
+            target.x = target_point.x;
+            target.y = target_point.y;
             SDL_RenderCopy(game->G.ren, game->pre_rendered_cells, &source, &target);
+            // a rendercopy eldobja magatol a kijelzon kivuli rajzolasokat
         }
     }
     SDL_RenderPresent(game->G.ren);
-    SDL_SetRenderTarget(game->G.ren, NULL);
-}
-static void rendercells(gameWindow *game) {
-    Gset_color(&game->G, game->G.colors.bg);
-    SDL_RenderClear(game->G.ren);
-    int win_w, win_h;
-    SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h);
-    SDL_Rect target = {0, 0, win_w, win_h};
-    SDL_Rect source;
-    source.w = target.w / game->zoom;
-    source.h = target.h / game->zoom;
-    source.x = game->center_x - source.w / 2.0;
-    source.y = game->center_y - source.h / 2.0;
-    if (source.x < 0) {
-        target.x = -source.x * game->zoom;
-        target.w += source.x * game->zoom;
-        source.x = 0;
-    }
-    if (source.y < 0) {
-        target.y = -source.y * game->zoom;
-        target.h += source.y * game->zoom;
-        source.y = 0;
-    }
-    if ((source.x + source.w) > (ssize_t)game->texture_w) {
-        source.w = (game->texture_w - source.x);
-        target.w = (game->texture_w - source.x) * game->zoom;
-    }
-    if ((source.y + source.h) > (ssize_t)game->texture_h) {
-        source.h = (game->texture_h - source.y);
-        target.h = (game->texture_h - source.y) * game->zoom;
-    }
-    SDL_RenderCopy(game->G.ren, game->full_game, &source, &target);
-    SDL_RenderPresent(game->G.ren);
-}
-void Wdraw(gameWindow *game, bool valtozott_adat) {
-    if (valtozott_adat) drawcells(game);
-    rendercells(game);
 }
 void Wzoom(gameWindow *game, double wheel, int x, int y) {
-    int win_w, win_h;
-    SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h);
-    game->center_x += 0.1 * wheel * (x - win_w / 2) / game->zoom;
-    game->center_y += 0.1 * wheel * (y - win_h / 2) / game->zoom;
+
+    //int win_w, win_h;
+    //SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h);
+    SDL_FPoint orginal_place_in_game = map_screen_to_game(game, (SDL_FPoint){x, y});
     game->zoom *= 1 + 0.1 * wheel;
-    Wdraw(game, false);
+    SDL_FPoint new_place_on_screen = map_game_to_screen(game,orginal_place_in_game);
+    game->x_screen_offset += x-new_place_on_screen.x;
+    game->y_screen_offset += y-new_place_on_screen.y;
+    Wdraw(game);
 }
