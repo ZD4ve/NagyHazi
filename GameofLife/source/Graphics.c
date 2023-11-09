@@ -91,23 +91,30 @@ SDL_Texture *Gpre_render_cells(Gwindow *window) {
         SDL_TEXTUREACCESS_TARGET,
         9 * CELL_SIZE, CELL_SIZE);
     SDL_SetRenderTarget(window->ren, tex);
-    // SDL_Surface *sur = SDL_CreateRGBSurface(0, 9 * CELL_SIZE, CELL_SIZE, 32, 0, 0, 0, 0);
-    SDL_Rect cell_outline = {0, 0, CELL_SIZE, CELL_SIZE};
-    SDL_Rect cell_inside = {CELL_SIZE / 8, CELL_SIZE / 8, CELL_SIZE - (2 * CELL_SIZE / 8), CELL_SIZE - (2 * CELL_SIZE / 8)};
+    size_t **matrix = Dgenerate_bayer_matrix(CELL_SIZE);
+    double fade_out[9] = {1, 0.3, 0.2, 0.15, 0.1, 0.05, 0, 0, 0};
+    ssize_t top_left_edge = CELL_SIZE / 8 - 1;
+    if (top_left_edge < 0) top_left_edge = 0;
+    ssize_t bottom_right_edge = CELL_SIZE - CELL_SIZE / 8;
     for (size_t i = 0; i < 9; i++) {
-        Gset_color(window, (i == 0 ? window->colors.primacc : window->colors.secacc));
-        SDL_RenderFillRect(window->ren, &cell_outline);
-        Gset_color(window, (i == 0 ? window->colors.prim : window->colors.bg));
-        SDL_RenderFillRect(window->ren, &cell_inside);
-        // SDL_FillRect(sur, &cell_outline, color_to_int(i == 0 ? window->colors.primacc : window->colors.secacc));
-        // SDL_FillRect(sur, &cell_inside, color_to_int(i == 0 ? window->colors.prim : window->colors.bg));
-        //  TODO: elhalvanyulas+orderes dithering
-        cell_outline.x += CELL_SIZE;
-        cell_inside.x += CELL_SIZE;
+        for (size_t x = 0; x < CELL_SIZE; x++) {
+            for (size_t y = 0; y < CELL_SIZE; y++) {
+                bool isalive = matrix[x][y] < (size_t)(fade_out[i] * CELL_SIZE * CELL_SIZE);
+                bool isedge =
+                    x <= (size_t)top_left_edge ||
+                    y <= (size_t)top_left_edge ||
+                    x >= (size_t)bottom_right_edge ||
+                    y >= (size_t)bottom_right_edge;
+                if (isalive & !isedge) Gset_color(window, window->colors.prim);
+                if (isalive & isedge) Gset_color(window, window->colors.primacc);
+                if (!isalive & !isedge) Gset_color(window, window->colors.bg);
+                if (!isalive & isedge) Gset_color(window, window->colors.secacc);
+                SDL_RenderDrawPoint(window->ren, x + (CELL_SIZE * i), y);
+            }
+        }
     }
     SDL_RenderPresent(window->ren);
     SDL_SetRenderTarget(window->ren, NULL);
-    // SDL_Texture *tex = SDL_CreateTextureFromSurface(window->ren, sur);
-    // SDL_FreeSurface(sur);
+    Dfree_bayer_matrix(matrix);
     return tex;
 }

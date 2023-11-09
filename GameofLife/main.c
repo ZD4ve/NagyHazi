@@ -13,6 +13,7 @@ int main(int argc, char *argv[]) {
     (void)argv;
 
     Ginit();
+    //SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" );
     Menu M = Minit();
     SDL_RenderPresent(M.G.ren);
 

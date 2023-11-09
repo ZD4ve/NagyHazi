@@ -14,11 +14,11 @@ gameWindow Winit(gameArea A, char *name) {
     new.G = Gnew(new.name, DEFAULT_WIDTH, DEFAULT_HEIGHT, true);
     new.texture_w = new.A.w *CELL_SIZE;
     new.texture_h = new.A.h *CELL_SIZE;
-    new.x_screen_offset = 0;
-    new.y_screen_offset = 0;
     new.zoom = kissebb(DEFAULT_WIDTH / (double)new.texture_w, DEFAULT_HEIGHT / (double)new.texture_h);
     new.pre_rendered_cells = Gpre_render_cells(&new.G);
     new.full_game = SDL_CreateTexture(new.G.ren, SDL_GetWindowPixelFormat(new.G.win), SDL_TEXTUREACCESS_TARGET, new.texture_w, new.texture_h);
+    new.x_screen_offset = (DEFAULT_WIDTH-new.texture_w*new.zoom)/2;
+    new.y_screen_offset = (DEFAULT_HEIGHT-new.texture_h*new.zoom)/2;
     Wdraw(&new);
     return new;
 }
@@ -41,12 +41,6 @@ static SDL_FPoint map_game_to_screen(gameWindow *game, SDL_FPoint game_point) {
 }
 
 void Wclick(gameWindow *game, int x, int y) {
-    // int win_w, win_h;
-    // SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h);
-    /*Aflipcell(&game->A,
-              ((x - win_w / 2) / game->zoom + game->center_x) / CELL_SIZE,
-              ((y - win_h / 2) / game->zoom + game->center_y) / CELL_SIZE);
-    */
     SDL_FPoint pont = map_screen_to_game(game, (SDL_FPoint){(float)x, (float)y});
     Aflipcell(&game->A, pont.x, pont.y);
     Wdraw(game);

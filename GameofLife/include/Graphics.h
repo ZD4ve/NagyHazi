@@ -7,6 +7,7 @@
 
 #include "Error.h"
 #include "Color.h"
+#include "Dither.h"
 
 #define CELL_SIZE 8
 
