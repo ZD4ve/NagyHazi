@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 
     SDL_Event e;
     bool quit = false;
-    bool pressed[7] = {0};
+    bool pressed[9] = {0};
     int mouse_x, mouse_y;
     /*
     0 - eger
@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
     5 - le
     6 - ctrl
     7 - s
+    8 - r
     */
     while (!quit) {
         SDL_WaitEvent(&e);
@@ -57,6 +58,10 @@ int main(int argc, char *argv[]) {
                 break;
             case SDL_KEYDOWN:
                 switch (e.key.keysym.scancode) {
+                    case SDL_SCANCODE_SPACE:
+                        if (pressed[1]) break;
+                        pressed[1] = true;
+                        break;
                     case SDL_SCANCODE_RIGHT:
                         if (pressed[2]) break;
                         pressed[2] = true;
@@ -78,6 +83,10 @@ int main(int argc, char *argv[]) {
                         pressed[7] = true;
                         if(pressed[6]) Msave_game(&M);
                         break;
+                    case SDL_SCANCODE_R:
+                        if(pressed[8]) break;
+                        pressed[8] = true;
+                        Wresetzoom(&M.game_open);
                     default:
                         break;
                 }
@@ -91,6 +100,9 @@ int main(int argc, char *argv[]) {
                 break;
             case SDL_KEYUP:
                 switch (e.key.keysym.scancode) {
+                    case SDL_SCANCODE_SPACE:
+                        pressed[0] = false;
+                        break;
                     case SDL_SCANCODE_RIGHT:
                         pressed[2] = false;
                         break;
@@ -103,6 +115,9 @@ int main(int argc, char *argv[]) {
                         break;
                     case SDL_SCANCODE_S:
                         pressed[7] = false;
+                        break;
+                    case SDL_SCANCODE_R:
+                        pressed[8] = false;
                         break;
                     default:
                         break;

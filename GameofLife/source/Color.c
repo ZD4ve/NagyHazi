@@ -34,7 +34,7 @@ Color_theme Cinit() {
  */
 static SDL_Color HSLtoRGB(double H, double S, double L) {
     while (H < 0) H += 360;
-    H = fmod(H, 360.0);
+    while (H >= 360) H -= 360;
     double C = (1 - fabs(2 * L - 1)) * S;
     double H1 = H / 60;
     double X = C * (1 - fabs(fmod(H1, 2.0) - 1));

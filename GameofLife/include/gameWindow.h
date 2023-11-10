@@ -23,4 +23,5 @@ void Wclose(gameWindow *game);
 void Wclick(gameWindow *game, int x, int y);
 void Wdraw(gameWindow *game);
 void Wzoom(gameWindow *game, double wheel, int x, int y);
+void Wresetzoom(gameWindow *game);
 #endif

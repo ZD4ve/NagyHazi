@@ -14,11 +14,9 @@ gameWindow Winit(gameArea A, char *name) {
     new.G = Gnew(new.name, DEFAULT_WIDTH, DEFAULT_HEIGHT, true);
     new.texture_w = new.A.w *CELL_SIZE;
     new.texture_h = new.A.h *CELL_SIZE;
-    new.zoom = kissebb(DEFAULT_WIDTH / (double)new.texture_w, DEFAULT_HEIGHT / (double)new.texture_h);
     new.pre_rendered_cells = Gpre_render_cells(&new.G);
     new.full_game = SDL_CreateTexture(new.G.ren, SDL_GetWindowPixelFormat(new.G.win), SDL_TEXTUREACCESS_TARGET, new.texture_w, new.texture_h);
-    new.x_screen_offset = (DEFAULT_WIDTH-new.texture_w*new.zoom)/2;
-    new.y_screen_offset = (DEFAULT_HEIGHT-new.texture_h*new.zoom)/2;
+    Wresetzoom(&new);
     Wdraw(&new);
     return new;
 }
@@ -65,9 +63,6 @@ void Wdraw(gameWindow *game) {
     SDL_RenderPresent(game->G.ren);
 }
 void Wzoom(gameWindow *game, double wheel, int x, int y) {
-
-    //int win_w, win_h;
-    //SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h);
     SDL_FPoint orginal_place_in_game = map_screen_to_game(game, (SDL_FPoint){x, y});
     game->zoom *= 1 + 0.1 * wheel;
     SDL_FPoint new_place_on_screen = map_game_to_screen(game,orginal_place_in_game);
@@ -75,3 +70,11 @@ void Wzoom(gameWindow *game, double wheel, int x, int y) {
     game->y_screen_offset += y-new_place_on_screen.y;
     Wdraw(game);
 }
+void Wresetzoom(gameWindow *game){
+    int win_w, win_h;
+    SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h);
+    game->zoom = kissebb(win_w / (double)game->texture_w, win_h / (double)game->texture_h);
+    game->x_screen_offset = (win_w-game->texture_w*game->zoom)/2;
+    game->y_screen_offset = (win_h-game->texture_h*game->zoom)/2;
+}
+
