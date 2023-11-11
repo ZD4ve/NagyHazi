@@ -20,8 +20,7 @@ typedef struct Menu{
 
 Menu Minit();
 void Mclose(Menu *menu);
-void Mclose_game(Menu *menu);
-void Msave_game(Menu *menu);
 void Mclick(Menu *menu, int x, int y);
+void Mevent(Menu *menu, SDL_Event e);
 
 #endif

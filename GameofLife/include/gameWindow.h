@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include "Graphics.h"
 #include "gameArea.h"
+#include "File.h"
 
 typedef struct gameWindow {
     gameArea A;
@@ -24,4 +25,5 @@ void Wclick(gameWindow *game, int x, int y);
 void Wdraw(gameWindow *game);
 void Wzoom(gameWindow *game, double wheel, int x, int y);
 void Wresetzoom(gameWindow *game);
+void Wevent(gameWindow *game, SDL_Event e);
 #endif
