@@ -90,11 +90,11 @@ void Wspeed(gameWindow *game, bool faster) {
     if (too_fast())
         faster = false;
     if (faster) {
-        game->autoplay_delay /= 2;
+        game->autoplay_delay /= 1.5;
         if (game->autoplay_delay == 0)
             game->autoplay_delay = 1;
     } else {
-        game->autoplay_delay *= 2;
+        game->autoplay_delay *= 1.5;
     }
 }
 static Uint32 autostep(Uint32 interval, void *game) {
