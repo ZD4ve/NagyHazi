@@ -17,6 +17,8 @@ typedef struct gameWindow {
     double zoom;
     ssize_t x_screen_offset;
     ssize_t y_screen_offset;
+    SDL_TimerID autoplay_id;
+    Uint32 autoplay_delay;
 } gameWindow;
 
 gameWindow Winit(gameArea A, char *name);

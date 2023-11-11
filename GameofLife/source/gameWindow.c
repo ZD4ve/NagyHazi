@@ -16,12 +16,16 @@ gameWindow Winit(gameArea A, char *name) {
     new.texture_h = new.A.h *CELL_SIZE;
     new.pre_rendered_cells = Gpre_render_cells(&new.G);
     new.full_game = SDL_CreateTexture(new.G.ren, SDL_GetWindowPixelFormat(new.G.win), SDL_TEXTUREACCESS_TARGET, new.texture_w, new.texture_h);
+    new.autoplay_id = 0;
+    new.autoplay_delay = 500;
     Wresetzoom(&new);
     Wdraw(&new);
     return new;
 }
 void Wclose(gameWindow *game) {
     if (game->G.win == NULL) return;
+    if (game->autoplay_id != 0)
+        SDL_RemoveTimer(game->autoplay_id);
     Afree(&game->A);
     SDL_DestroyTexture(game->pre_rendered_cells);
     SDL_DestroyTexture(game->full_game);
@@ -78,6 +82,37 @@ void Wresetzoom(gameWindow *game) {
     game->x_screen_offset = (win_w - game->texture_w * game->zoom) / 2;
     game->y_screen_offset = (win_h - game->texture_h * game->zoom) / 2;
 }
+static bool too_fast(){
+    return SDL_PeepEvents(NULL, 1, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT) == 1;
+}
+
+void Wspeed(gameWindow *game, bool faster) {
+    if (too_fast())
+        faster = false;
+    if (faster) {
+        game->autoplay_delay /= 2;
+        if (game->autoplay_delay == 0)
+            game->autoplay_delay = 1;
+    } else {
+        game->autoplay_delay *= 2;
+    }
+}
+static Uint32 autostep(Uint32 interval, void *game) {
+    (void)interval;
+    SDL_Event e;
+    e.type = SDL_USEREVENT;
+    e.user.code = too_fast() ? 1 : 0;
+    SDL_PushEvent(&e);
+    return ((gameWindow *)game)->autoplay_delay;
+}
+void Wtoggle_autoplay(gameWindow *game) {
+    if (game->autoplay_id == 0) {
+        game->autoplay_id = SDL_AddTimer(1, autostep, (void *)game);
+    } else {
+        SDL_RemoveTimer(game->autoplay_id);
+        game->autoplay_id = 0;
+    }
+}
 void Wevent(gameWindow *game, SDL_Event e) {
     static bool pressed[9] = {0};
     /*
@@ -97,9 +132,18 @@ void Wevent(gameWindow *game, SDL_Event e) {
         case SDL_WINDOWEVENT:
             if (e.window.event == SDL_WINDOWEVENT_CLOSE)
                 Wclose(game);
-            if (e.window.event == SDL_WINDOWEVENT_RESIZED){
-                Wresetzoom(game);
+            if (e.window.event == SDL_WINDOWEVENT_RESIZED) {
+                // Wresetzoom(game);
                 Wdraw(game);
+            }
+            break;
+        case SDL_USEREVENT:
+            if (e.user.code == 0) {
+                Astep(&game->A);
+                Wdraw(game);
+            }
+            if (e.user.code == 1) {
+                Wspeed(game, false);
             }
             break;
         case SDL_MOUSEBUTTONDOWN:
@@ -112,6 +156,7 @@ void Wevent(gameWindow *game, SDL_Event e) {
                 case SDL_SCANCODE_SPACE:
                     if (pressed[1]) break;
                     pressed[1] = true;
+                    Wtoggle_autoplay(game);
                     break;
                 case SDL_SCANCODE_RIGHT:
                     if (pressed[2]) break;
@@ -128,10 +173,14 @@ void Wevent(gameWindow *game, SDL_Event e) {
                 case SDL_SCANCODE_UP:
                     if (pressed[4]) break;
                     pressed[4] = true;
+                    if (game->autoplay_id != 0)
+                        Wspeed(game, true);
                     break;
                 case SDL_SCANCODE_DOWN:
                     if (pressed[5]) break;
                     pressed[5] = true;
+                    if (game->autoplay_id != 0)
+                        Wspeed(game, false);
                     break;
                 case SDL_SCANCODE_RCTRL:
                 case SDL_SCANCODE_LCTRL:
@@ -160,7 +209,7 @@ void Wevent(gameWindow *game, SDL_Event e) {
         case SDL_KEYUP:
             switch (e.key.keysym.scancode) {
                 case SDL_SCANCODE_SPACE:
-                    pressed[0] = false;
+                    pressed[1] = false;
                     break;
                 case SDL_SCANCODE_RIGHT:
                     pressed[2] = false;
