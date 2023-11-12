@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "include/Graphics.h"
 #include "include/Menu.h"
 #include "include/gameWindow.h"

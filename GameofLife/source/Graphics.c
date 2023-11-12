@@ -23,7 +23,7 @@ Gwindow Gnew(char title[], int width, int height, bool resizable) {
     window.w = width;
     window.win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_ALLOW_HIGHDPI | (resizable & SDL_WINDOW_RESIZABLE));
     ErrorIFnull(window.win, "Nem hozhato letre az ablak!");
-    window.ren = SDL_CreateRenderer(window.win, -1, SDL_RENDERER_ACCELERATED);
+    window.ren = SDL_CreateRenderer(window.win, -1, SDL_RENDERER_SOFTWARE);
     ErrorIFnull(window.ren, "Nem hozhato letre a megjelenito!");
     window.font_big = TTF_OpenFont("asset/PixelifySans.ttf", 48);
     ErrorIFtrue(!window.font_big, "Nem sikerult megnyitni a fontot!");
