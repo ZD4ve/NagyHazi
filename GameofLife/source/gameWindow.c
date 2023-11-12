@@ -83,7 +83,7 @@ void Wresetzoom(gameWindow *game) {
     game->y_screen_offset = (win_h - game->texture_h * game->zoom) / 2;
 }
 static bool too_fast(){
-    return SDL_PeepEvents(NULL, 1, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT) == 1;
+    return SDL_PeepEvents(NULL, 2, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT) == 2;
 }
 
 void Wspeed(gameWindow *game, bool faster) {
@@ -196,6 +196,7 @@ void Wevent(gameWindow *game, SDL_Event e) {
                     if (pressed[8]) break;
                     pressed[8] = true;
                     Wresetzoom(game);
+                    Wdraw(game);
                 default:
                     break;
             }

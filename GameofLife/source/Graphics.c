@@ -42,7 +42,8 @@ void Gfill_background(Gwindow *window) {
     SDL_RenderClear(window->ren);
 }
 
-static void Gprint_with_font(Gwindow *window, char *text, SDL_Rect location, SDL_Color color, TTF_Font *font) {
+static SDL_Rect print_with_font(Gwindow *window, char *text, SDL_Rect location, SDL_Color color, TTF_Font *font) {
+    if (text[0] == '\0') return location;
     SDL_Surface *surface = TTF_RenderUTF8_Blended(font, text, color);
     ErrorIFnull(surface, "Sikertelen surface render!");
     SDL_Texture *texture = SDL_CreateTextureFromSurface(window->ren, surface);
@@ -53,14 +54,16 @@ static void Gprint_with_font(Gwindow *window, char *text, SDL_Rect location, SDL
     ErrorIFtrue(SDL_RenderCopy(window->ren, texture, NULL, &location) < 0, "Sikertelen render!");
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
+    return location;
 }
 
-/*static Uint32 color_to_int(SDL_Color color) {
-    return SDL_MapRGBA(&format, color.r, color.g, color.b, color.a);
-}*/
-
-void Gprint(Gwindow *window, char *text, SDL_Rect *location, Colortype col) {
-    Gprint_with_font(window, text, *location, col == primary ? window->colors.primacc : window->colors.secacc, window->font_reg);
+SDL_Rect Gprint(Gwindow *window, char *text, SDL_Rect *location, Colortype col) {
+    SDL_Color szin;
+    if (col == primary) szin = window->colors.prim;
+    if (col == primary_accent) szin = window->colors.primacc;
+    if (col == secondary) szin = window->colors.sec;
+    if (col == secondary_accent) szin = window->colors.secacc;
+    return print_with_font(window, text, *location, szin, window->font_reg);
 }
 
 void Gprint_title(Gwindow *window) {
@@ -69,10 +72,10 @@ void Gprint_title(Gwindow *window) {
     ErrorIFtrue(TTF_SizeUTF8(window->font_big, title, &location.w, &location.h) < 0, "TTF hiba!");
     location.x = (window->w - location.w) / 2;  // kozepre rendezes
     location.y = 30;
-    Gprint_with_font(window, "Game of Life", location, window->colors.prim, window->font_big);
+    print_with_font(window, "Game of Life", location, window->colors.prim, window->font_big);
 }
 
-SDL_Rect Grectwithborders(Gwindow *window, SDL_Rect location, size_t border_width, Colortype col) {
+void Gtextbox(Gwindow *window, SDL_Rect location, char *text, size_t border_width, Colortype col) {
     Gset_color(window, col == primary ? window->colors.primacc : window->colors.secacc);
     SDL_RenderFillRect(window->ren, &location);
     location.x += border_width;
@@ -81,7 +84,7 @@ SDL_Rect Grectwithborders(Gwindow *window, SDL_Rect location, size_t border_widt
     location.h -= border_width * 2;
     Gset_color(window, col == primary ? window->colors.prim : window->colors.sec);
     SDL_RenderFillRect(window->ren, &location);
-    return location;
+    print_with_font(window, text, location, col == primary ? window->colors.secacc : window->colors.primacc, window->font_reg);
 }
 
 SDL_Texture *Gpre_render_cells(Gwindow *window) {
@@ -117,4 +120,96 @@ SDL_Texture *Gpre_render_cells(Gwindow *window) {
     SDL_SetRenderTarget(window->ren, NULL);
     Dfree_bayer_matrix(matrix);
     return tex;
+}
+
+void Ginput_text(Gwindow *window, char *dest, size_t len, SDL_Rect rect, bool is_file_name) {
+    /* Ez tartalmazza az aktualis szerkesztest */
+    char composition[SDL_TEXTEDITINGEVENT_TEXT_SIZE];
+    composition[0] = '\0';
+    /* Ezt a kirajzolas kozben hasznaljuk */
+    char textandcomposition[len + SDL_TEXTEDITINGEVENT_TEXT_SIZE + 1];
+    bool quit = false;
+    bool done = false;
+    if(dest[0] != '\0' && is_file_name) dest[strlen(dest)-4] = '\0';
+
+    SDL_StartTextInput();
+    while (!quit & !done) {
+        strcpy(textandcomposition, dest);
+        strcat(textandcomposition, composition);
+        Gtextbox(window, rect, textandcomposition, 5, primary);
+        SDL_RenderPresent(window->ren);
+
+        SDL_Event e;
+        SDL_WaitEvent(&e);
+        switch (e.type) {
+            /* Kulonleges karakter */
+            case SDL_KEYDOWN:
+                if (e.key.keysym.sym == SDLK_BACKSPACE) {
+                    int textlen = strlen(dest);
+                    do {
+                        if (textlen == 0) {
+                            break;
+                        }
+                        if ((dest[textlen - 1] & 0x80) == 0x00) {
+                            /* Egy bajt */
+                            dest[textlen - 1] = 0x00;
+                            break;
+                        }
+                        if ((dest[textlen - 1] & 0xC0) == 0x80) {
+                            /* Bajt, egy tobb-bajtos szekvenciabol */
+                            dest[textlen - 1] = 0x00;
+                            textlen--;
+                        }
+                        if ((dest[textlen - 1] & 0xC0) == 0xC0) {
+                            /* Egy tobb-bajtos szekvencia elso bajtja */
+                            dest[textlen - 1] = 0x00;
+                            break;
+                        }
+                    } while (true);
+                }
+                if (e.key.keysym.sym == SDLK_RETURN) {
+                    done = true;
+                }
+                break;
+
+            /* A feldolgozott szoveg bemenete */
+            case SDL_TEXTINPUT:
+                if (strlen(dest) + strlen(e.text.text) < len) {
+                    strcat(dest, e.text.text);
+                }
+
+                /* Az eddigi szerkesztes torolheto */
+                composition[0] = '\0';
+                break;
+
+            /* Szoveg szerkesztese */
+            case SDL_TEXTEDITING:
+                strcpy(composition, e.edit.text);
+                break;
+
+            /* A felhasznalo kikattint a szovegdobozbol */
+            case SDL_MOUSEBUTTONDOWN: {
+                SDL_Point mouse_position;
+                SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
+                if (!SDL_PointInRect(&mouse_position, &rect)){
+                    SDL_PushEvent(&e);
+                    done = true;
+                }
+                break;
+            }
+            /* Ablak bezarasa*/
+            case SDL_WINDOWEVENT:
+                if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
+                    SDL_PushEvent(&e);
+                    quit = true;
+                }
+                break;
+        }
+    }
+    SDL_StopTextInput();
+    if (done) {
+        if(is_file_name) strcat(dest,".con");
+        Gtextbox(window, rect, dest, 5, secondary);
+        SDL_RenderPresent(window->ren);
+    }
 }

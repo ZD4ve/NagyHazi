@@ -9,7 +9,9 @@
 typedef enum Colortype 
 { 
     primary, 
-    secondary
+    secondary,
+    primary_accent,
+    secondary_accent
 } Colortype;
 
 typedef struct Color_theme {

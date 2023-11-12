@@ -12,16 +12,16 @@ Color_theme Cinit() {
     static double PrimHue = -1;
     if (PrimHue == -1) {
         srand(time(NULL));
-        PrimHue = 90 * eloszlas((rand() / (double)RAND_MAX) * 2 - 1) + 60;
+        PrimHue = 90 * eloszlas((rand() / (double)RAND_MAX) * 2 - 1) + 30;
         // 60fokos offset szine generalasahoz
     }
 
     Color_theme new;
     new.prim = HSLtoRGB(PrimHue, 1, .65);
-    new.primacc = HSLtoRGB(PrimHue, .6, .25);
+    new.primacc = HSLtoRGB(PrimHue, .8, .20);
     new.sec = HSLtoRGB(PrimHue + 180, 1, .65);
-    new.secacc = HSLtoRGB(PrimHue + 180, .6, .25);
-    new.bg = HSLtoRGB(PrimHue + 180, .3, .15);
+    new.secacc = HSLtoRGB(PrimHue + 180, .8, .20);
+    new.bg = HSLtoRGB(PrimHue + 180, .3, .1);
     return new;
 }
 
