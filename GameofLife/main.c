@@ -9,7 +9,6 @@ int main(int argc, char *argv[]) {
     (void)argv;
 
     Ginit();
-    SDL_SetHint(SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
     Menu M = Minit();
     
     SDL_Event e;

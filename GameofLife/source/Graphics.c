@@ -2,6 +2,8 @@
 
 void Ginit() {
     ErrorIFtrue(SDL_Init(SDL_INIT_EVERYTHING) < 0, "Nem indithato az SDL!");
+    SDL_SetHint("SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR", "0");
+    SDL_SetHint(SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
     ErrorIFtrue(TTF_Init() < 0, "TTF elinditasa sikertelen");
 }
 void Gclose(Gwindow *window) {
