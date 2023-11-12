@@ -1,4 +1,4 @@
-#include "../include/gamearea.h"
+#include "../include/gameArea.h"
 
 gameArea Anew(size_t width, size_t height) {
     gameArea new = {
