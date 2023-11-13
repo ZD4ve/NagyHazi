@@ -24,7 +24,7 @@ typedef struct gameArea {
 gameArea Anew(size_t width, size_t height);
 void Aclear(gameArea *gamearea);
 void Afree(gameArea *gamearea);
-size_t Agetage(uint8_t cell);
+ssize_t Agetage(uint8_t cell);
 void Astep(gameArea *A);
 bool Aback(gameArea *A);
 void Aflipcell(gameArea *A, double x, double y);

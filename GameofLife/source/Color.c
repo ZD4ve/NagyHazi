@@ -1,5 +1,8 @@
 #include "../include/Color.h"
 
+#define COLOR_WHEEL_OFFSET 30
+#define COLOR_WHEEL_RANGE 120
+
 static SDL_Color HSLtoRGB(double H, double S, double L);
 static double eloszlas(double x) {
     //return x;
@@ -12,7 +15,7 @@ Color_theme Cinit() {
     static double PrimHue = -1;
     if (PrimHue == -1) {
         srand(time(NULL));
-        PrimHue = 90 * eloszlas((rand() / (double)RAND_MAX) * 2 - 1) + 30;
+        PrimHue = COLOR_WHEEL_RANGE/2 * eloszlas((rand() / (double)RAND_MAX) * 2 - 1) + COLOR_WHEEL_OFFSET;
         // 60fokos offset szine generalasahoz
     }
 

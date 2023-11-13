@@ -31,11 +31,12 @@ void Afree(gameArea *gamearea) {
     gamearea->area = NULL;
 }
 
-size_t Agetage(uint8_t cell) {
+ssize_t Agetage(uint8_t cell) {
+    if(cell == 0) return -1;
     for (size_t i = 0; i < 8; i++) {
         if ((cell & (1 << i)) != 0) return i;
     }
-    return 8;
+    return -1;//ez sose kéne hogy lefusson
 }
 static bool isalive(uint8_t cell) {
     // megnezzuk, hogy a masodik legkisseb helyirteken 1 van-e

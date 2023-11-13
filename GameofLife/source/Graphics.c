@@ -27,9 +27,9 @@ Gwindow Gnew(char title[], int width, int height, bool resizable) {
     ErrorIFnull(window.win, "Nem hozhato letre az ablak!");
     window.ren = SDL_CreateRenderer(window.win, -1, SDL_RENDERER_SOFTWARE);
     ErrorIFnull(window.ren, "Nem hozhato letre a megjelenito!");
-    window.font_big = TTF_OpenFont("asset/PixelifySans.ttf", 48);
+    window.font_big = TTF_OpenFont("asset/PixelifySans.ttf", 72);
     ErrorIFtrue(!window.font_big, "Nem sikerult megnyitni a fontot!");
-    window.font_reg = TTF_OpenFont("asset/PixelifySans.ttf", 24);
+    window.font_reg = TTF_OpenFont("asset/born2bsporty-fs.otf", 24);
     ErrorIFtrue(!window.font_reg, "Nem sikerult megnyitni a fontot!");
     window.colors = Cinit();
     return window;
@@ -77,16 +77,18 @@ void Gprint_title(Gwindow *window) {
     print_with_font(window, "Game of Life", location, window->colors.prim, window->font_big);
 }
 
-void Gtextbox(Gwindow *window, SDL_Rect location, char *text, size_t border_width, Colortype col) {
+void Gtextbox(Gwindow *window, char *text, SDL_Rect *location, Colortype col, size_t border_width) {
     Gset_color(window, col == primary ? window->colors.primacc : window->colors.secacc);
-    SDL_RenderFillRect(window->ren, &location);
-    location.x += border_width;
-    location.y += border_width;
-    location.w -= border_width * 2;
-    location.h -= border_width * 2;
+    SDL_RenderFillRect(window->ren, location);
+    SDL_Rect inside_rect = *location;
+    inside_rect.x += border_width;
+    inside_rect.y += border_width;
+    inside_rect.w -= border_width * 2;
+    inside_rect.h -= border_width * 2;
     Gset_color(window, col == primary ? window->colors.prim : window->colors.sec);
-    SDL_RenderFillRect(window->ren, &location);
-    print_with_font(window, text, location, col == primary ? window->colors.secacc : window->colors.primacc, window->font_reg);
+    SDL_RenderFillRect(window->ren, &inside_rect);
+    inside_rect.x += border_width;
+    print_with_font(window, text, inside_rect, col == primary ? window->colors.secacc : window->colors.primacc, window->font_reg);
 }
 
 SDL_Texture *Gpre_render_cells(Gwindow *window) {
@@ -94,14 +96,14 @@ SDL_Texture *Gpre_render_cells(Gwindow *window) {
         window->ren,
         SDL_GetWindowPixelFormat(window->win),
         SDL_TEXTUREACCESS_TARGET,
-        9 * CELL_SIZE, CELL_SIZE);
+        8 * CELL_SIZE, CELL_SIZE);
     SDL_SetRenderTarget(window->ren, tex);
     size_t **matrix = Dgenerate_bayer_matrix(CELL_SIZE);
-    double fade_out[9] = {1, 0.3, 0.2, 0.15, 0.1, 0.05, 0, 0, 0};
+    double fade_out[8] = {1, 0.3, 0.2, 0.15, 0.1, 0.05, 0, 0};
     ssize_t top_left_edge = CELL_SIZE / 8 - 1;
     if (top_left_edge < 0) top_left_edge = 0;
     ssize_t bottom_right_edge = CELL_SIZE - CELL_SIZE / 8;
-    for (size_t i = 0; i < 9; i++) {
+    for (size_t i = 0; i < 8; i++) {
         for (size_t x = 0; x < CELL_SIZE; x++) {
             for (size_t y = 0; y < CELL_SIZE; y++) {
                 bool isalive = matrix[x][y] < (size_t)(fade_out[i] * CELL_SIZE * CELL_SIZE);
@@ -132,13 +134,13 @@ void Ginput_text(Gwindow *window, char *dest, size_t len, SDL_Rect rect, bool is
     char textandcomposition[len + SDL_TEXTEDITINGEVENT_TEXT_SIZE + 1];
     bool quit = false;
     bool done = false;
-    if(dest[0] != '\0' && is_file_name) dest[strlen(dest)-4] = '\0';
+    if (dest[0] != '\0' && is_file_name) dest[strlen(dest) - 4] = '\0';
 
     SDL_StartTextInput();
     while (!quit & !done) {
         strcpy(textandcomposition, dest);
         strcat(textandcomposition, composition);
-        Gtextbox(window, rect, textandcomposition, 5, primary);
+        Gtextbox(window, textandcomposition, &rect, primary, 5);
         SDL_RenderPresent(window->ren);
 
         SDL_Event e;
@@ -193,7 +195,7 @@ void Ginput_text(Gwindow *window, char *dest, size_t len, SDL_Rect rect, bool is
             case SDL_MOUSEBUTTONDOWN: {
                 SDL_Point mouse_position;
                 SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-                if (!SDL_PointInRect(&mouse_position, &rect)){
+                if (!SDL_PointInRect(&mouse_position, &rect)) {
                     SDL_PushEvent(&e);
                     done = true;
                 }
@@ -210,8 +212,8 @@ void Ginput_text(Gwindow *window, char *dest, size_t len, SDL_Rect rect, bool is
     }
     SDL_StopTextInput();
     if (done) {
-        if(is_file_name) strcat(dest,".con");
-        Gtextbox(window, rect, dest, 5, secondary);
+        if (is_file_name) strcat(dest, ".con");
+        Gtextbox(window, dest, &rect, secondary, 5);
         SDL_RenderPresent(window->ren);
     }
 }

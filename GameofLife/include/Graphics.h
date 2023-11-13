@@ -27,9 +27,9 @@ void Gquit();
 Gwindow Gnew(char title[], int width, int height, bool resizable);
 void Gset_color(Gwindow *window, SDL_Color col);
 void Gfill_background(Gwindow *window);
-SDL_Rect Gprint(Gwindow *window, char *text, SDL_Rect *location, Colortype col);
 void Gprint_title(Gwindow *window);
-void Gtextbox(Gwindow *window, SDL_Rect location, char *text, size_t border_width, Colortype col);
+SDL_Rect Gprint(Gwindow *window, char *text, SDL_Rect *location, Colortype col);
+void Gtextbox(Gwindow *window, char *text, SDL_Rect *location, Colortype col, size_t border_width);
 SDL_Texture *Gpre_render_cells(Gwindow *window);
 void Ginput_text(Gwindow *window, char *dest, size_t hossz, SDL_Rect teglalap, bool is_file_name);
 #endif

@@ -9,7 +9,7 @@
 #include "gameWindow.h"
 #include "debugmalloc.h"
 
-#define MAX_SAVES 10
+#define MAX_SAVES 13
 #define INPUT_MAX_LENGHT 15
 
 typedef struct uj_jatek_input{
@@ -33,6 +33,6 @@ typedef struct Menu{
 Menu Minit();
 void Mclose(Menu *menu);
 void Mclick(Menu *menu, int x, int y);
-void Mevent(Menu *menu, SDL_Event e);
+void Mevent(Menu *menu, SDL_Event *e);
 
 #endif
