@@ -35,7 +35,7 @@ static void draw_new_game_options(Menu *menu) {
     }
     tmp.x = 60 + BUTTON_WIDTH;
     tmp.w = BUTTON_WIDTH + BUTTON_WIDTH + 10;
-    Gtextbox(&menu->G, "", &tmp, 5, primary);
+    Gtextbox(&menu->G, "", &tmp, primary, 5);
     tmp.x += (tmp.w - text_width[3]) / 2;
     Gprint(&menu->G, text[3], &tmp, secondary_accent);
     menu->text_input.button = tmp;
