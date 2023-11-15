@@ -1,4 +1,4 @@
-#include "../include/gameWindow.h"
+#include "gameWindow.h"
 
 #define DEFAULT_WIDTH 1000
 #define DEFAULT_HEIGHT 500

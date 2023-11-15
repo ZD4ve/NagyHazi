@@ -1,4 +1,4 @@
-#include "../include/Graphics.h"
+#include "Graphics.h"
 
 void Ginit() {
     ErrorIFtrue(SDL_Init(SDL_INIT_EVERYTHING) < 0, "Nem indithato az SDL!");

@@ -1,4 +1,4 @@
-#include "../include/Dither.h"
+#include "Dither.h"
 static size_t bit_reverse(size_t szam, size_t bitlen) {
     size_t result = 0;
     for (size_t i = 0; i < bitlen; i++) {

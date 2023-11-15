@@ -1,4 +1,4 @@
-#include "../include/Error.h"
+#include "Error.h"
 
 void ErrorIFnull(void* ptr, char* error_msg) {
     ErrorIFtrue(ptr == NULL, error_msg);

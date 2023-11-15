@@ -1,8 +1,8 @@
 #include <stdlib.h>
 
-#include "include/Graphics.h"
-#include "include/Menu.h"
-#include "include/gameWindow.h"
+#include "Graphics.h"
+#include "Menu.h"
+#include "gameWindow.h"
 
 int main(int argc, char *argv[]) {
     (void)argc;

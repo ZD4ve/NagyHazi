@@ -1,4 +1,4 @@
-#include "../include/Menu.h"
+#include "Menu.h"
 
 #define BUTTON_HEIGHT 40
 #define BUTTON_WIDTH 200

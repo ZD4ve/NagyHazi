@@ -1,4 +1,4 @@
-#include "../include/Color.h"
+#include "Color.h"
 
 #define COLOR_WHEEL_OFFSET 30
 #define COLOR_WHEEL_RANGE 120
