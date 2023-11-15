@@ -7,9 +7,9 @@ gameArea Anew(size_t width, size_t height) {
         .history_lenght = 0,
     };
     new.area = (uint8_t **)malloc(width * sizeof(uint8_t *));
-    ErrorIFnull(new.area, "Sikertelen memoria foglalas!");
+    ErrorIFnoMemory(new.area);
     new.area[0] = (uint8_t *)malloc(width * height * sizeof(uint8_t));
-    ErrorIFnull(new.area[0], "Sikertelen memoria foglalas!");
+    ErrorIFnoMemory(new.area[0]);
     for (size_t x = 1; x < width; ++x)
         new.area[x] = new.area[0] + x *height;
     return new;
@@ -79,7 +79,6 @@ bool Aback(gameArea *A) {
 }
 void Aflipcell(gameArea *A, double x, double y) {
     if(x >= (double)A->w || y >= (double)A->h || x<0 || y<0) return;
-    //ErrorIFtrue(x >= A->w || y >= A->h || x<0 || y<0, "Cella lehelyezes nem letezo helyre!");
     A->area[(int)x][(int)y] ^= 1;
     A->history_lenght = 0;
 }

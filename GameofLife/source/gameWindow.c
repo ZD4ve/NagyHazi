@@ -16,6 +16,7 @@ gameWindow Winit(gameArea A, char *name) {
     new.texture_h = new.A.h *CELL_SIZE;
     new.pre_rendered_cells = Gpre_render_cells(&new.G);
     new.full_game = SDL_CreateTexture(new.G.ren, SDL_GetWindowPixelFormat(new.G.win), SDL_TEXTUREACCESS_TARGET, new.texture_w, new.texture_h);
+    ErrorIFnull(new.full_game, "Sikertelen textura letrehozas!");
     new.autoplay_id = 0;
     new.autoplay_delay = 500;
     Wresetzoom(&new);
@@ -46,13 +47,12 @@ static SDL_FPoint map_game_to_screen(gameWindow *game, SDL_FPoint game_point) {
 void Wclick(gameWindow *game, int x, int y) {
     SDL_FPoint pont = map_screen_to_game(game, (SDL_FPoint){(float)x, (float)y});
     Aflipcell(&game->A, pont.x, pont.y);
-    Wdraw(game, true);
 }
 
 void Wdraw(gameWindow *game, bool all_cells) {
     Gset_color(&game->G, game->G.colors.bg);
     if (all_cells)
-        SDL_RenderClear(game->G.ren);
+        ErrorIFsdl(SDL_RenderClear(game->G.ren));
     SDL_FPoint target_point = {0.0, 0.0};
     SDL_Rect target = {0, 0, CELL_SIZE * game->zoom + 1, CELL_SIZE * game->zoom + 1};
     SDL_Rect source = {0, 0, CELL_SIZE, CELL_SIZE};
@@ -64,7 +64,7 @@ void Wdraw(gameWindow *game, bool all_cells) {
                 target_point = map_game_to_screen(game, (SDL_FPoint){x, y});
                 target.x = target_point.x;
                 target.y = target_point.y;
-                SDL_RenderCopy(game->G.ren, game->pre_rendered_cells, &source, &target);
+                ErrorIFsdl(SDL_RenderCopy(game->G.ren, game->pre_rendered_cells, &source, &target));
                 // a rendercopy eldobja magatol a kijelzon kivuli rajzolasoka
             }
         }
@@ -81,13 +81,15 @@ void Wzoom(gameWindow *game, double wheel, int x, int y) {
 }
 void Wresetzoom(gameWindow *game) {
     int win_w, win_h;
-    SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h);
+    ErrorIFsdl(SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h));
     game->zoom = kissebb(win_w / (double)game->texture_w, win_h / (double)game->texture_h);
     game->x_screen_offset = (win_w - game->texture_w * game->zoom) / 2;
     game->y_screen_offset = (win_h - game->texture_h * game->zoom) / 2;
 }
 static bool too_fast() {
-    return SDL_PeepEvents(NULL, 1, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT) == 1;
+    int number_of_events = SDL_PeepEvents(NULL, 1, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
+    ErrorIFsdl(number_of_events);
+    return number_of_events == 1;
 }
 
 void Wspeed(gameWindow *game, bool faster) {
@@ -106,12 +108,13 @@ static Uint32 autostep(Uint32 interval, void *game) {
     SDL_Event e;
     e.type = SDL_USEREVENT;
     e.user.code = too_fast() ? 1 : 0;
-    SDL_PushEvent(&e);
+    ErrorIFsdl(SDL_PushEvent(&e));
     return ((gameWindow *)game)->autoplay_delay;
 }
 void Wtoggle_autoplay(gameWindow *game) {
     if (game->autoplay_id == 0) {
         game->autoplay_id = SDL_AddTimer(1, autostep, (void *)game);
+        ErrorIFtrue(game->autoplay_id == 0, "Sikertelen autoplay inditas!");
     } else {
         SDL_RemoveTimer(game->autoplay_id);
         game->autoplay_id = 0;
@@ -133,7 +136,7 @@ static bool first_click(SDL_Event *e, bool *state) {
 static void keyevent(gameWindow *game, SDL_Event *e) {
     static bool key_pressed[8] = {0};
     /*
-    0 - eger
+    0 - r
     1 - space
     2 - jobb
     3 - bal
@@ -212,6 +215,7 @@ void Wevent(gameWindow *game, SDL_Event *e) {
             if (mouse_down) break;
             mouse_down = true;
             Wclick(game, mouse_x, mouse_y);
+            Wdraw(game, true);
             break;
         case SDL_KEYDOWN:
         case SDL_KEYUP:

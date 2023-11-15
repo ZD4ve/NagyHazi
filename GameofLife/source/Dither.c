@@ -1,4 +1,6 @@
 #include "Dither.h"
+#include "debugmalloc.h"
+
 static size_t bit_reverse(size_t szam, size_t bitlen) {
     size_t result = 0;
     for (size_t i = 0; i < bitlen; i++) {
@@ -32,7 +34,9 @@ static size_t log_base_2(size_t szam) {
  */
 size_t **Dgenerate_bayer_matrix(size_t n) {
     size_t **matrix = (size_t **)malloc(n * sizeof(size_t *));
+    ErrorIFnoMemory(matrix);
     matrix[0] = (size_t *)malloc(n * n * sizeof(size_t));
+    ErrorIFnoMemory(matrix[0]);
     size_t bitlen = log_base_2(n);
     for (size_t i = 0; i < n; i++) {
         matrix[i] = matrix[0] + i * n;

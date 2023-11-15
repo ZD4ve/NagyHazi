@@ -3,6 +3,7 @@
 #include "Graphics.h"
 #include "Menu.h"
 #include "gameWindow.h"
+#include "Error.h"
 
 int main(int argc, char *argv[]) {
     (void)argc;
@@ -13,7 +14,7 @@ int main(int argc, char *argv[]) {
     
     SDL_Event e;
     while (1) {
-        SDL_WaitEvent(&e);
+        ErrorIFtrue(SDL_WaitEvent(&e)==0,"Event hiba");
         if (e.type == SDL_USEREVENT) {
             Wevent(&M.game_open, &e);
             continue;

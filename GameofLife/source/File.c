@@ -3,6 +3,7 @@
 gameArea Fopen(char *path) {
     char err[] = "Serult fajl!";
     char* path_with_folder = (char*)malloc((strlen(SAVES_FOLDER)+strlen(path)+1)*sizeof(char));
+    ErrorIFnoMemory(path_with_folder);
     strcpy(path_with_folder,SAVES_FOLDER);
     strcat(path_with_folder,path);
     FILE *file = fopen(path_with_folder, "r");
@@ -29,6 +30,7 @@ gameArea Fopen(char *path) {
 }
 void Fsave(char *path, gameArea *gamearea) {
     char* path_with_folder = (char*)malloc((strlen(SAVES_FOLDER)+strlen(path)+1)*sizeof(char));
+    ErrorIFnoMemory(path_with_folder);
     strcpy(path_with_folder,SAVES_FOLDER);
     strcat(path_with_folder,path);
     FILE *file = fopen(path_with_folder, "w");
@@ -47,6 +49,7 @@ void Fsave(char *path, gameArea *gamearea) {
 
 size_t Flist(Fgame_file games[], size_t max_count) {
     DIR *mappa = opendir("saved");
+    ErrorIFnull(mappa, "Nem sikerult menyitni a saved mappat!");
     size_t cnt = 0;
     struct dirent *fajl = readdir(mappa);
     while (fajl != NULL) {
@@ -54,9 +57,8 @@ size_t Flist(Fgame_file games[], size_t max_count) {
         size_t len = strlen(fajl->d_name);
         if (len > 4 && strcmp((fajl->d_name) + len - 4, ".con") == 0) {
             games[cnt].path = (char *)malloc((len + 1/* - 4*/) * sizeof(char));
+            ErrorIFnoMemory(games[cnt].path);
             strcpy(games[cnt].path,fajl->d_name);
-            /*strncpy(games[cnt].path, fajl->d_name, len - 4);
-            games[cnt].path[len - 4] = '\0';*/
             cnt++;
         }
         fajl = readdir(mappa);

@@ -19,7 +19,7 @@ static void draw_new_game_options(Menu *menu) {
     char text[4][10] = {"Name:", "Width:", "Height:", "New game!"};
     int text_width[4];
     for (size_t i = 0; i < 4; i++) {
-        TTF_SizeUTF8(menu->G.font_reg, text[i], &text_width[i], NULL);
+        ErrorIFsdl(TTF_SizeUTF8(menu->G.font_reg, text[i], &text_width[i], NULL));
     }
     SDL_Rect tmp = {60 + BUTTON_WIDTH, 150, BUTTON_WIDTH, BUTTON_HEIGHT};
     for (size_t i = 0; i < 3; i++) {

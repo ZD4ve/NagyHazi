@@ -1,11 +1,8 @@
 #include "Error.h"
 
-void ErrorIFnull(void* ptr, char* error_msg) {
-    ErrorIFtrue(ptr == NULL, error_msg);
-}
-
-void ErrorIFtrue(bool test, char* error_msg) {
+void ErrorIFtrue_with_params(bool test, char* error_msg, char* FILE, int LINE) {
     if (!test) return;
-    SDL_Log("%s\n%s", error_msg, SDL_GetError());
+    SDL_Log("%s\nFajl: %s\nSor: %d\nSDL: %s", error_msg, FILE, LINE, SDL_GetError());
+    //abort();
     exit(EXIT_FAILURE);
 }

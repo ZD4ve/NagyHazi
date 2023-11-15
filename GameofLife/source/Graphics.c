@@ -1,10 +1,10 @@
 #include "Graphics.h"
 
 void Ginit() {
-    ErrorIFtrue(SDL_Init(SDL_INIT_EVERYTHING) < 0, "Nem indithato az SDL!");
+    ErrorIFsdl(SDL_Init(SDL_INIT_EVERYTHING));
     SDL_SetHint("SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR", "0");
     SDL_SetHint(SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
-    ErrorIFtrue(TTF_Init() < 0, "TTF elinditasa sikertelen");
+    ErrorIFsdl(TTF_Init());
 }
 void Gclose(Gwindow *window) {
     TTF_CloseFont(window->font_big);
@@ -28,20 +28,20 @@ Gwindow Gnew(char title[], int width, int height, bool resizable) {
     window.ren = SDL_CreateRenderer(window.win, -1, SDL_RENDERER_SOFTWARE);
     ErrorIFnull(window.ren, "Nem hozhato letre a megjelenito!");
     window.font_big = TTF_OpenFont("asset/PixelifySans.ttf", 72);
-    ErrorIFtrue(!window.font_big, "Nem sikerult megnyitni a fontot!");
+    ErrorIFnull(window.font_big, "Nem sikerult megnyitni a fontot!");
     window.font_reg = TTF_OpenFont("asset/born2bsporty-fs.otf", 24);
-    ErrorIFtrue(!window.font_reg, "Nem sikerult megnyitni a fontot!");
+    ErrorIFnull(window.font_reg, "Nem sikerult megnyitni a fontot!");
     window.colors = Cinit();
     return window;
 }
 
 void Gset_color(Gwindow *window, SDL_Color col) {
-    SDL_SetRenderDrawColor(window->ren, col.r, col.g, col.b, col.a);
+    ErrorIFsdl(SDL_SetRenderDrawColor(window->ren, col.r, col.g, col.b, col.a));
 }
 
 void Gfill_background(Gwindow *window) {
     Gset_color(window, window->colors.bg);
-    SDL_RenderClear(window->ren);
+    ErrorIFsdl(SDL_RenderClear(window->ren));
 }
 
 static SDL_Rect print_with_font(Gwindow *window, char *text, SDL_Rect location, SDL_Color color, TTF_Font *font) {
@@ -53,7 +53,7 @@ static SDL_Rect print_with_font(Gwindow *window, char *text, SDL_Rect location, 
     location.y += (location.h - surface->h) / 2;
     location.w = surface->w;
     location.h = surface->h;
-    ErrorIFtrue(SDL_RenderCopy(window->ren, texture, NULL, &location) < 0, "Sikertelen render!");
+    ErrorIFsdl(SDL_RenderCopy(window->ren, texture, NULL, &location));
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
     return location;
@@ -71,7 +71,7 @@ SDL_Rect Gprint(Gwindow *window, char *text, SDL_Rect *location, Colortype col) 
 void Gprint_title(Gwindow *window) {
     char title[] = "Game of Life";
     SDL_Rect location;
-    ErrorIFtrue(TTF_SizeUTF8(window->font_big, title, &location.w, &location.h) < 0, "TTF hiba!");
+    ErrorIFsdl(TTF_SizeUTF8(window->font_big, title, &location.w, &location.h));
     location.x = (window->w - location.w) / 2;  // kozepre rendezes
     location.y = 30;
     print_with_font(window, "Game of Life", location, window->colors.prim, window->font_big);
@@ -79,25 +79,27 @@ void Gprint_title(Gwindow *window) {
 
 void Gtextbox(Gwindow *window, char *text, SDL_Rect *location, Colortype col, size_t border_width) {
     Gset_color(window, col == primary ? window->colors.primacc : window->colors.secacc);
-    SDL_RenderFillRect(window->ren, location);
+    ErrorIFsdl(SDL_RenderFillRect(window->ren, location));
     SDL_Rect inside_rect = *location;
     inside_rect.x += border_width;
     inside_rect.y += border_width;
     inside_rect.w -= border_width * 2;
     inside_rect.h -= border_width * 2;
     Gset_color(window, col == primary ? window->colors.prim : window->colors.sec);
-    SDL_RenderFillRect(window->ren, &inside_rect);
+    ErrorIFsdl(SDL_RenderFillRect(window->ren, &inside_rect));
     inside_rect.x += border_width;
     print_with_font(window, text, inside_rect, col == primary ? window->colors.secacc : window->colors.primacc, window->font_reg);
 }
 
 SDL_Texture *Gpre_render_cells(Gwindow *window) {
+    Uint32 format = SDL_GetWindowPixelFormat(window->win);
+    ErrorIFtrue(format==SDL_PIXELFORMAT_UNKNOWN,"SDL hiba!");
     SDL_Texture *tex = SDL_CreateTexture(
         window->ren,
-        SDL_GetWindowPixelFormat(window->win),
+        format,
         SDL_TEXTUREACCESS_TARGET,
         8 * CELL_SIZE, CELL_SIZE);
-    SDL_SetRenderTarget(window->ren, tex);
+    ErrorIFsdl(SDL_SetRenderTarget(window->ren, tex));
     size_t **matrix = Dgenerate_bayer_matrix(CELL_SIZE);
     double fade_out[8] = {1, 0.3, 0.2, 0.15, 0.1, 0.05, 0, 0};
     ssize_t top_left_edge = CELL_SIZE / 8 - 1;
@@ -116,12 +118,12 @@ SDL_Texture *Gpre_render_cells(Gwindow *window) {
                 if (isalive & isedge) Gset_color(window, window->colors.primacc);
                 if (!isalive & !isedge) Gset_color(window, window->colors.bg);
                 if (!isalive & isedge) Gset_color(window, window->colors.secacc);
-                SDL_RenderDrawPoint(window->ren, x + (CELL_SIZE * i), y);
+                ErrorIFsdl(SDL_RenderDrawPoint(window->ren, x + (CELL_SIZE * i), y));
             }
         }
     }
     SDL_RenderPresent(window->ren);
-    SDL_SetRenderTarget(window->ren, NULL);
+    ErrorIFsdl(SDL_SetRenderTarget(window->ren, NULL));
     Dfree_bayer_matrix(matrix);
     return tex;
 }
@@ -144,7 +146,7 @@ void Ginput_text(Gwindow *window, char *dest, size_t len, SDL_Rect rect, bool is
         SDL_RenderPresent(window->ren);
 
         SDL_Event e;
-        SDL_WaitEvent(&e);
+        ErrorIFtrue(SDL_WaitEvent(&e)==0,"Event hiba!");
         switch (e.type) {
             /* Kulonleges karakter */
             case SDL_KEYDOWN:
@@ -196,7 +198,7 @@ void Ginput_text(Gwindow *window, char *dest, size_t len, SDL_Rect rect, bool is
                 SDL_Point mouse_position;
                 SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
                 if (!SDL_PointInRect(&mouse_position, &rect)) {
-                    SDL_PushEvent(&e);
+                    ErrorIFsdl(SDL_PushEvent(&e));
                     done = true;
                 }
                 break;
@@ -204,7 +206,7 @@ void Ginput_text(Gwindow *window, char *dest, size_t len, SDL_Rect rect, bool is
             /* Ablak bezarasa*/
             case SDL_WINDOWEVENT:
                 if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
-                    SDL_PushEvent(&e);
+                    ErrorIFsdl(SDL_PushEvent(&e));
                     quit = true;
                 }
                 break;
