@@ -25,13 +25,7 @@ static size_t log_base_2(size_t szam) {
     }
     return 0;
 }
-/**
- * @brief Elkesziti a Bayer matrixot a rendezett ditheringhez
- * @param n a matrix merete
- * @return Az elkeszitett bayer matrix, a memoria felszabaditas a hivo feladata,
- *  az erre keszitett fugvennyel
- * @remark A matematika keplet forrasa: https://en.wikipedia.org/wiki/Ordered_dithering
- */
+
 size_t **Dgenerate_bayer_matrix(size_t n) {
     size_t **matrix = (size_t **)malloc(n * sizeof(size_t *));
     ErrorIFnoMemory(matrix);
