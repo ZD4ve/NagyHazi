@@ -1,1 +1,1 @@
-git archive -o GameofLife.zip
+git archive master -o GameofLife.zip
