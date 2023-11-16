@@ -32,6 +32,10 @@ Gwindow Gnew(char title[], int width, int height, bool resizable) {
     window.font_reg = TTF_OpenFont("asset/born2bsporty-fs.otf", 24);
     ErrorIFnull(window.font_reg, "Nem sikerult megnyitni a fontot!");
     window.colors = Cinit();
+    SDL_Surface *icon = SDL_LoadBMP("asset/icon.bmp");
+    ErrorIFnull(icon,"Nem sikerult betolteni az icont!")
+    SDL_SetWindowIcon(window.win,icon);
+    SDL_FreeSurface(icon);
     return window;
 }
 

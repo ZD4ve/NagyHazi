@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#-fsanitize=address -g\
 /usr/bin/gcc \
     -fdiagnostics-color=always \
     -g main.c source/*.c \

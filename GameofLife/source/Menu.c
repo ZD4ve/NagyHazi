@@ -117,7 +117,8 @@ void Mevent(Menu *menu, SDL_Event *e) {
             if (e->window.event == SDL_WINDOWEVENT_CLOSE) {
                 Mclose(menu);
                 Gquit();
-                exit(0);
+                SDL_Quit();
+                exit(EXIT_SUCCESS);
             }
             break;
         case SDL_MOUSEBUTTONDOWN:
