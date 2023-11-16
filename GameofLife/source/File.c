@@ -1,4 +1,6 @@
 #include "File.h"
+#include "debugmalloc.h"
+
 
 gameArea Fopen(char *path) {
     char err[] = "Serult fajl!";

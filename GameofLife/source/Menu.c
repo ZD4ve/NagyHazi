@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include "debugmalloc.h"
 
 #define BUTTON_HEIGHT 40
 #define BUTTON_WIDTH 200

@@ -12,11 +12,7 @@ gameWindow Winit(gameArea A, char *name) {
     new.A = A;
     new.name = name;
     new.G = Gnew(new.name, DEFAULT_WIDTH, DEFAULT_HEIGHT, true);
-    new.texture_w = new.A.w *CELL_SIZE;
-    new.texture_h = new.A.h *CELL_SIZE;
     new.pre_rendered_cells = Gpre_render_cells(&new.G);
-    new.full_game = SDL_CreateTexture(new.G.ren, SDL_GetWindowPixelFormat(new.G.win), SDL_TEXTUREACCESS_TARGET, new.texture_w, new.texture_h);
-    ErrorIFnull(new.full_game, "Sikertelen textura letrehozas!");
     new.autoplay_id = 0;
     new.autoplay_delay = 500;
     Wresetzoom(&new);
@@ -29,7 +25,6 @@ void Wclose(gameWindow *game) {
         SDL_RemoveTimer(game->autoplay_id);
     Afree(&game->A);
     SDL_DestroyTexture(game->pre_rendered_cells);
-    SDL_DestroyTexture(game->full_game);
     Gclose(&game->G);
 }
 
@@ -82,9 +77,9 @@ void Wzoom(gameWindow *game, double wheel, int x, int y) {
 void Wresetzoom(gameWindow *game) {
     int win_w, win_h;
     ErrorIFsdl(SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h));
-    game->zoom = kissebb(win_w / (double)game->texture_w, win_h / (double)game->texture_h);
-    game->x_screen_offset = (win_w - game->texture_w * game->zoom) / 2;
-    game->y_screen_offset = (win_h - game->texture_h * game->zoom) / 2;
+    game->zoom = kissebb(win_w / (double)game->A.w*CELL_SIZE, win_h / (double)game->A.h*CELL_SIZE);
+    game->x_screen_offset = (win_w - game->A.w*CELL_SIZE * game->zoom) / 2;
+    game->y_screen_offset = (win_h - game->A.h*CELL_SIZE * game->zoom) / 2;
 }
 static bool too_fast() {
     int number_of_events = SDL_PeepEvents(NULL, 1, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);

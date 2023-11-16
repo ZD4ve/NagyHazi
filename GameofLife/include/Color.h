@@ -8,38 +8,36 @@
 
 /**
  * @file Color.h
- * @brief Header file for color-related structures and functions.
+ * @brief This file contains color-related structures and functions.
  */
 
 /**
  * @enum Colortype
- * @brief Represents different color types for rendering.
+ * @brief An enumeration representing different color types for rendering.
  */
 typedef enum Colortype 
 { 
-    primary, 
-    secondary,
-    primary_accent,
-    secondary_accent
+    primary, /**< Primary color type */
+    secondary, /**< Secondary color type */
+    primary_accent, /**< Primary accent color type */
+    secondary_accent /**< Secondary accent color type */
 } Colortype;
 
 /**
  * @struct Color_theme
- * @brief Represents a color theme with 5 colors.
+ * @brief A structure representing a color theme with five colors.
  */
 typedef struct Color_theme {
-    SDL_Color prim;    /**< Primary color */
-    SDL_Color primacc; /**< Primary accent color */
-    SDL_Color sec;     /**< Secondary color */
-    SDL_Color secacc;  /**< Secondary accent color */
-    SDL_Color bg;      /**< Background color */
+    SDL_Color prim;    /**< Primary color of the theme */
+    SDL_Color primacc; /**< Primary accent color of the theme */
+    SDL_Color sec;     /**< Secondary color of the theme */
+    SDL_Color secacc;  /**< Secondary accent color of the theme */
+    SDL_Color bg;      /**< Background color of the theme */
 } Color_theme;
-
 
 /**
  * @brief Initializes a Color_theme with a dynamically generated color scheme.
- *
- * @details This function initializes a Color_theme structure with dynamically generated
+ * @remarks This function initializes a Color_theme structure with dynamically generated
  * colors based on a random hue value that has a higher probability to be a warm color.
  * From this hue, a complement color is generated for the secondary. The function ensures
  * that if called multiple times, it returns the same theme.
@@ -47,4 +45,5 @@ typedef struct Color_theme {
  * @return A Color_theme structure representing the generated color scheme.
  */
 Color_theme Cinit();
+
 #endif

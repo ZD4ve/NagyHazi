@@ -1,4 +1,5 @@
 #include "gameArea.h"
+#include "debugmalloc.h"
 
 gameArea Anew(size_t width, size_t height) {
     gameArea new = {
