@@ -1,4 +1,6 @@
-doxygen docs/Doxyfile
-cd docs/latex
+doxygen Doxyfile
+cd latex
 make pdf
-mv refman.pdf ../../../documentation.pdf
+cd ..
+mv latex/refman.pdf ../documentation.pdf
+rm latex -r
