@@ -25,9 +25,7 @@ typedef enum Colortype
 
 /**
  * @struct Color_theme
- * @brief Represents a color theme with various components.
- *
- * This struct defines a color theme using SDL_Color components.
+ * @brief Represents a color theme with 5 colors.
  */
 typedef struct Color_theme {
     SDL_Color prim;    /**< Primary color */

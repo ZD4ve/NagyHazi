@@ -1,9 +1,25 @@
 #include <stdlib.h>
 
+#include "Error.h"
 #include "Graphics.h"
 #include "Menu.h"
 #include "gameWindow.h"
-#include "Error.h"
+
+/** 
+ * @mainpage Game of Life by David Zoller
+ *
+ * \section intro_sec Introduction
+ *
+ * This is the introduction.
+ *
+ * \section install_sec Installation
+ *
+ * \subsection step1 Step 1: Opening the box
+ *
+ * etc...
+ */
+
+
 
 int main(int argc, char *argv[]) {
     (void)argc;
@@ -11,10 +27,10 @@ int main(int argc, char *argv[]) {
 
     Ginit();
     Menu M = Minit();
-    
+
     SDL_Event e;
     while (1) {
-        ErrorIFtrue(SDL_WaitEvent(&e)==0,"Event hiba");
+        ErrorIFtrue(SDL_WaitEvent(&e) == 0, "Event hiba");
         if (e.type == SDL_USEREVENT) {
             Wevent(&M.game_open, &e);
             continue;
