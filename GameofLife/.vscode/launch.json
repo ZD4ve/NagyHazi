@@ -7,7 +7,6 @@
         {
             "name": "Launch Program",
             "preLaunchTask": "build",
-            "postDebugTask": "destroy",
             "program": "${workspaceFolder}/GameofLife",
             "request": "launch",
             "type": "cppdbg",
