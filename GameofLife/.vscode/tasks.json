@@ -4,7 +4,9 @@
             "label": "build",
             "type": "shell",
             "command": "bash",
-            "args": ["build.sh"],
+            "args": [
+                "build.sh"
+            ],
             "options": {
                 "cwd": "${workspaceFolder}"
             },
@@ -14,7 +16,19 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
+            }
+        },
+        {
+            "label": "generate docs",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "docs.sh"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
             },
+            "problemMatcher": []
         }
     ],
     "version": "2.0.0"

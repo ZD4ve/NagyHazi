@@ -132,12 +132,12 @@ SDL_Texture *Gpre_render_cells(Gwindow *window) {
     return tex;
 }
 
-void Ginput_text(Gwindow *window, char *dest, size_t len, SDL_Rect rect, bool is_file_name) {
+void Ginput_text(Gwindow *window, char *dest, size_t lenght, SDL_Rect bounding_box, bool is_file_name) {
     /* Ez tartalmazza az aktualis szerkesztest */
     char composition[SDL_TEXTEDITINGEVENT_TEXT_SIZE];
     composition[0] = '\0';
     /* Ezt a kirajzolas kozben hasznaljuk */
-    char textandcomposition[len + SDL_TEXTEDITINGEVENT_TEXT_SIZE + 1];
+    char textandcomposition[lenght + SDL_TEXTEDITINGEVENT_TEXT_SIZE + 1];
     bool quit = false;
     bool done = false;
     if (dest[0] != '\0' && is_file_name) dest[strlen(dest) - 4] = '\0';
@@ -146,7 +146,7 @@ void Ginput_text(Gwindow *window, char *dest, size_t len, SDL_Rect rect, bool is
     while (!quit & !done) {
         strcpy(textandcomposition, dest);
         strcat(textandcomposition, composition);
-        Gtextbox(window, textandcomposition, &rect, primary, 5);
+        Gtextbox(window, textandcomposition, &bounding_box, primary, 5);
         SDL_RenderPresent(window->ren);
 
         SDL_Event e;
@@ -184,7 +184,7 @@ void Ginput_text(Gwindow *window, char *dest, size_t len, SDL_Rect rect, bool is
 
             /* A feldolgozott szoveg bemenete */
             case SDL_TEXTINPUT:
-                if (strlen(dest) + strlen(e.text.text) < len) {
+                if (strlen(dest) + strlen(e.text.text) < lenght) {
                     strcat(dest, e.text.text);
                 }
 
@@ -201,7 +201,7 @@ void Ginput_text(Gwindow *window, char *dest, size_t len, SDL_Rect rect, bool is
             case SDL_MOUSEBUTTONDOWN: {
                 SDL_Point mouse_position;
                 SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-                if (!SDL_PointInRect(&mouse_position, &rect)) {
+                if (!SDL_PointInRect(&mouse_position, &bounding_box)) {
                     ErrorIFsdl(SDL_PushEvent(&e));
                     done = true;
                 }
@@ -219,7 +219,7 @@ void Ginput_text(Gwindow *window, char *dest, size_t len, SDL_Rect rect, bool is
     SDL_StopTextInput();
     if (done) {
         if (is_file_name) strcat(dest, ".con");
-        Gtextbox(window, dest, &rect, secondary, 5);
+        Gtextbox(window, dest, &bounding_box, secondary, 5);
         SDL_RenderPresent(window->ren);
     }
 }

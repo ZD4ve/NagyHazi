@@ -115,11 +115,11 @@ SDL_Texture *Gpre_render_cells(Gwindow *window);
  * @brief Handles text input in the graphics window.
  * @param window Pointer to the window to handle text input.
  * @param dest The destination for the input text.
- * @param hossz The length of the input text.
- * @param teglalap The bounding box for the input text.
+ * @param lenght The length of the input text.
+ * @param bounding_box The bounding box for the input text.
  * @param is_file_name Whether the input text is a file name or not.
- * If it is, it will append ".con" to the end, and the destination must be 4 bytes longer than hossz.
+ * If it is, it will append ".con" to the end, and the destination must be 4 bytes longer than lenght.
  */
-void Ginput_text(Gwindow *window, char *dest, size_t hossz, SDL_Rect teglalap, bool is_file_name);
+void Ginput_text(Gwindow *window, char *dest, size_t lenght, SDL_Rect bounding_box, bool is_file_name);
 
 #endif
