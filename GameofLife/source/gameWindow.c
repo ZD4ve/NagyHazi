@@ -77,7 +77,7 @@ void Wzoom(gameWindow *game, double wheel, int x, int y) {
 void Wresetzoom(gameWindow *game) {
     int win_w, win_h;
     ErrorIFsdl(SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h));
-    game->zoom = kissebb(win_w / (double)game->A.w*CELL_SIZE, win_h / (double)game->A.h*CELL_SIZE);
+    game->zoom = kissebb((double)win_w / (game->A.w*CELL_SIZE), (double)win_h / (game->A.h*CELL_SIZE));
     game->x_screen_offset = (win_w - game->A.w*CELL_SIZE * game->zoom) / 2;
     game->y_screen_offset = (win_h - game->A.h*CELL_SIZE * game->zoom) / 2;
 }

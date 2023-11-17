@@ -7,6 +7,7 @@
 #define DITHER_H
 
 #include <stdlib.h>
+#include "Error.h"
 
 /**
  * @brief Generates a Bayer matrix for ordered dithering.
