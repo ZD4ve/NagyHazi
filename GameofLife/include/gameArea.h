@@ -1,6 +1,7 @@
 /**
  * @file gameArea.h
- * @brief This file contains the structures and functions for the gameArea.
+ * @brief This file contains the structures and functions for the gameArea,
+ * where the simulation takes place and the cells live.
  */
 
 #ifndef GAMEAREA_H
@@ -15,7 +16,8 @@
 /**
  * @struct gameArea
  * @brief Represents the game area and its properties.
- * @details This structure should only be created with a function, and must be deleted with the Afree function.
+ * @details This structure should only be created with a function,
+ * and must be deleted with the Afree function.
  */
 typedef struct gameArea {
     size_t w;      ///< Width of the game area.

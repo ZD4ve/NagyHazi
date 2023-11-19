@@ -1,4 +1,4 @@
-doxygen Doxyfile
+doxygen
 cd latex
 make pdf
 cd ..
