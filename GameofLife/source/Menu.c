@@ -2,7 +2,7 @@
 #include "debugmalloc.h"
 
 #define BUTTON_HEIGHT 40
-#define BUTTON_WIDTH 200
+#define BUTTON_WIDTH 250
 
 static void draw_title(Menu *menu) {
     Gprint_title(&menu->G);
