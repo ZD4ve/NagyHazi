@@ -25,21 +25,21 @@ typedef struct Fgame_file{
 
 /**
  * @brief Opens a game file.
- * @param path Path to the game file.
+ * @param path Path to the game file. Must be a valid path.
  * @return The game area.
  */
 gameArea Fopen(char *path);
 
 /**
  * @brief Saves a game area to a file.
- * @param path Path to the game file.
+ * @param path Path to the game file. Should be a valid path.
  * @param gamearea Pointer to the game area to save.
  */
 void Fsave(char *path, gameArea *gamearea);
 
 /**
  * @brief Lists game files.
- * @param games Array of game files.
+ * @param games Array of game files. Must not be NULL.
  * @param max_count Maximum number of game files to list.
  * @return The number of game files listed.
  */

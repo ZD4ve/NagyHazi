@@ -7,8 +7,10 @@
 #define ERROR_H
 
 #include <SDL2/SDL.h>
+#include <errno.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 
 /**
  * @def ErrorIFtrue(test, error_msg)
@@ -45,8 +47,13 @@
  * @param test The condition to check.
  * @param error_msg The error message to display if the test is true.
  * @param FILE The file name where the error occurred.
- * @param LINE The line number where the error occurred.
+ * @param LINEThe line number where the error occurred.
  */
 void ErrorIFtrue_with_params(bool test, char* error_msg, char* FILE, int LINE);
 
+/**
+ * @brief Displays a warning message box and logs an error message.
+ * @param error_msg The error message to be displayed.
+ */
+void ErrorWarning(char* error_msg);
 #endif

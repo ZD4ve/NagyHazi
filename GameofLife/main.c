@@ -1,11 +1,3 @@
-/**
- * @file main.c
- * @brief Main file for the Game of Life simulator.
- *
- * This file contains the main function which initializes the graphics, 
- * creates the menu, and enters the main event loop.
- */
-
 #include <stdlib.h>
 
 #include "Error.h"
@@ -68,6 +60,22 @@
  * \c 00000000 - Dead cell \n
  * \c 00000010 - Dead cell, was alive 1 tick ago \n
  * \c 01010001 - Alive cell, was alive 4 and 6 ticks ago
+ * 
+ * @section file_sec File Format (.con)
+ * 
+ * The first line of the file specifies the dimensions of the game board,
+ * separated by spaces (width first, then height).
+ * Additional data can be stored within the same line.
+ * The game board follows next. Here, empty cells are represented by a dot,
+ * while living cells are represented by a capital 'O'.
+ * These are stored in a grid layout. The file type is ".con". \n
+ * For example: elso.con \n
+ * <tt>
+ * 7 3     \n
+ * .....O. \n
+ * OOO..O. \n
+ * .....O. \n
+ * </tt>
  * 
  * @section install_sec Installation
  *

@@ -36,13 +36,13 @@ gameArea Anew(size_t width, size_t height);
 
 /**
  * @brief Clears the game area.
- * @param gamearea Pointer to the game area to clear.
+ * @param gamearea Pointer to the game area to clear. Must not be NULL.
  */
 void Aclear(gameArea *gamearea);
 
 /**
  * @brief Frees the memory allocated for the game area.
- * @param gamearea Pointer to the game area to free.
+ * @param gamearea Pointer to the game area to free. Must not be NULL.
  */
 void Afree(gameArea *gamearea);
 
@@ -55,20 +55,20 @@ ssize_t Agetage(uint8_t cell);
 
 /**
  * @brief Advances the simulation by one step.
- * @param A Pointer to the game area to step.
+ * @param A Pointer to the game area to step. Must not be NULL.
  */
 void Astep(gameArea *A);
 
 /**
  * @brief Steps back the simulation by one step.
- * @param A Pointer to the game area to step back.
+ * @param A Pointer to the game area to step back. Must not be NULL.
  * @return True if successful, false otherwise.
  */
 bool Aback(gameArea *A);
 
 /**
  * @brief Flips a cell in the game area.
- * @param A Pointer to the game area.
+ * @param A Pointer to the game area. Must not be NULL.
  * @param x The x-coordinate of the cell to flip.
  * @param y The y-coordinate of the cell to flip.
  * @remark If the coordinates are out of bounds, the function does nothing.

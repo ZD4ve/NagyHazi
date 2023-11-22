@@ -13,7 +13,7 @@
 #include "gameWindow.h"
 
 #define MAX_SAVES 13
-#define INPUT_MAX_LENGHT 15
+#define INPUT_MAX_LENGHT 20
 
 /**
  * @struct uj_jatek_input
@@ -50,22 +50,22 @@ Menu Minit();
 
 /**
  * @brief Closes the menu.
- * @param menu Pointer to the menu to close.
+ * @param menu Pointer to the menu to close. Must not be NULL.
  */
 void Mclose(Menu *menu);
 
 /**
  * @brief Handles a click event in the menu.
- * @param menu Pointer to the menu.
+ * @param menu Pointer to the menu. Must not be NULL.
  * @param x The x-coordinate of the click.
  * @param y The y-coordinate of the click.
  */
 void Mclick(Menu *menu, int x, int y);
 
 /**
- * @brief Handles an event in the menu.
+ * @brief Handles an event in the menu. Must not be NULL.
  * @param menu Pointer to the menu to handle event.
- * @param e The event to handle.
+ * @param e The event to handle. Must not be NULL.
  */
 void Mevent(Menu *menu, SDL_Event *e);
 

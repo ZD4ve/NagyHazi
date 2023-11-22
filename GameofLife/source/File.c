@@ -37,8 +37,11 @@ void Fsave(char *path, gameArea *gamearea) {
     strcat(path_with_folder,path);
     FILE *file = fopen(path_with_folder, "w");
     free(path_with_folder);
-    ErrorIFnull(file, "Nem sikerult menteni a fajlt!");
-
+    if (file == NULL)
+    {
+        ErrorWarning("Nem sikerult menteni a játékot!");
+        return;
+    }
     fprintf(file, "%lu %lu\n", gamearea->w, gamearea->h);
     for (size_t y = 0; y < gamearea->h; y++) {
         for (size_t x = 0; x < gamearea->w; x++) {

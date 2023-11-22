@@ -11,12 +11,10 @@ static double eloszlas(double x) {
 }
 
 Color_theme Cinit() {
-    // A program indítasa utan mindig uyganazt a szint adja vissza;
     static double PrimHue = -1;
     if (PrimHue == -1) {
         srand(time(NULL));
         PrimHue = COLOR_WHEEL_RANGE/2 * eloszlas((rand() / (double)RAND_MAX) * 2 - 1) + COLOR_WHEEL_OFFSET;
-        // 60fokos offset szine generalasahoz
     }
 
     Color_theme new;

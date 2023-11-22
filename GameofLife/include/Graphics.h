@@ -43,7 +43,7 @@ void Ginit();
 
 /**
  * @brief Creates a new window.
- * @param title The title of the window.
+ * @param title The title of the window. Must not be NULL.
  * @param width The width of the window.
  * @param height The height of the window.
  * @param resizable Whether the window is resizable or not.
@@ -53,7 +53,7 @@ Gwindow Gnew(char title[], int width, int height, bool resizable);
 
 /**
  * @brief Closes the graphics window.
- * @param window Pointer to the graphics window to close.
+ * @param window Pointer to the graphics window to close. Must not be NULL.
  */
 void Gclose(Gwindow *window);
 
@@ -65,27 +65,27 @@ void Gquit();
 
 /**
  * @brief Sets the color of the renderer.
- * @param window Pointer to the window to set color.
+ * @param window Pointer to the window to set color. Must not be NULL.
  * @param col The color to set.
  */
 void Gset_color(Gwindow *window, SDL_Color col);
 
 /**
  * @brief Fills the background of the Menu.
- * @param window Pointer to the window to fill background.
+ * @param window Pointer to the window to fill background. Must not be NULL.
  */
 void Gfill_background(Gwindow *window);
 
 /**
  * @brief Prints the title of the game.
- * @param window Pointer to the window to print title.
+ * @param window Pointer to the window to print title. Must not be NULL.
  */
 void Gprint_title(Gwindow *window);
 
 /**
  * @brief Prints text in the graphics window.
- * @param window Pointer to the window to print text.
- * @param text The text to print.
+ * @param window Pointer to the window to print text. Must not be NULL.
+ * @param text The text to print. Empty string for no text. Must not be NULL.
  * @param location The location to print the text.
  * @param col The color of the text.
  * @return The rectangle where the text was printed.
@@ -94,8 +94,8 @@ SDL_Rect Gprint(Gwindow *window, char *text, SDL_Rect *location, Colortype col);
 
 /**
  * @brief Creates a textbox in the graphics window.
- * @param window Pointer to the window to create textbox.
- * @param text The text for the textbox.
+ * @param window Pointer to the window to create textbox. Must not be NULL.
+ * @param text The text for the textbox. Empty string for no text. Must not be NULL.
  * @param location The location for the textbox.
  * @param col The color of the textbox, only accepts primary or secondary.
  * @param border_width The width of the border of the textbox.
@@ -104,7 +104,7 @@ void Gtextbox(Gwindow *window, char *text, SDL_Rect *location, Colortype col, si
 
 /**
  * @brief Pre-renders cells in the graphics window.
- * @param window Pointer to the game window.
+ * @param window Pointer to the game window. Must not be NULL.
  * @return The texture of the pre-rendered cells.
  * @remark It uses the ordered dithering algorithm to render the fading effect.
  * @file Dither.h
@@ -113,7 +113,7 @@ SDL_Texture *Gpre_render_cells(Gwindow *window);
 
 /**
  * @brief Handles text input in the graphics window.
- * @param window Pointer to the window to handle text input.
+ * @param window Pointer to the window to handle text input. Must not be NULL.
  * @param dest The destination for the input text.
  * @param lenght The length of the input text.
  * @param bounding_box The bounding box for the input text.

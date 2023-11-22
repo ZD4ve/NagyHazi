@@ -17,11 +17,7 @@ gameArea Anew(size_t width, size_t height) {
 }
 
 void Aclear(gameArea *gamearea) {
-    for (size_t x = 0; x < gamearea->w; x++) {
-        for (size_t y = 0; y < gamearea->h; y++) {
-            gamearea->area[x][y] = 0;
-        }
-    }
+    memset(gamearea->area[0], 0, gamearea->w * gamearea->h * sizeof(uint8_t));
 }
 
 void Afree(gameArea *gamearea) {
