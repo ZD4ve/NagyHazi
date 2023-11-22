@@ -2,6 +2,7 @@
 
 #define DEFAULT_WIDTH 1000
 #define DEFAULT_HEIGHT 500
+//#define LOG_FPS
 
 static double kissebb(double a, double b) {
     return a < b ? a : b;
@@ -186,6 +187,10 @@ static void keyevent(gameWindow *game, SDL_Event *e) {
 
 void Wevent(gameWindow *game, SDL_Event *e) {
     static bool mouse_down = false;
+    #ifdef LOG_FPS
+    static size_t last_log = 0;
+    static size_t ticks = 0;
+    #endif
     int mouse_x, mouse_y;
     SDL_GetMouseState(&mouse_x, &mouse_y);
     switch (e->type) {
@@ -201,6 +206,14 @@ void Wevent(gameWindow *game, SDL_Event *e) {
             if (e->user.code == 0) {
                 Astep(&game->A);
                 Wdraw(game, false);
+                #ifdef LOG_FPS
+                ticks++;
+                if(SDL_GetTicks() - last_log > 1000) {
+                    printf("FPS: %zu\n", ticks);
+                    ticks = 0;
+                    last_log = SDL_GetTicks();
+                }
+                #endif
             }
             if (e->user.code == 1) {
                 Wspeed(game, false);
