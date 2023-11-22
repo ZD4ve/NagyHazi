@@ -77,19 +77,18 @@ void Wzoom(gameWindow *game, double wheel, int x, int y) {
 void Wresetzoom(gameWindow *game) {
     int win_w, win_h;
     ErrorIFsdl(SDL_GetRendererOutputSize(game->G.ren, &win_w, &win_h));
-    game->zoom = kissebb((double)win_w / (game->A.w*CELL_SIZE), (double)win_h / (game->A.h*CELL_SIZE));
-    game->x_screen_offset = (win_w - game->A.w*CELL_SIZE * game->zoom) / 2;
-    game->y_screen_offset = (win_h - game->A.h*CELL_SIZE * game->zoom) / 2;
+    game->zoom = kissebb((double)win_w / (game->A.w * CELL_SIZE), (double)win_h / (game->A.h * CELL_SIZE));
+    game->x_screen_offset = (win_w - game->A.w * CELL_SIZE * game->zoom) / 2;
+    game->y_screen_offset = (win_h - game->A.h * CELL_SIZE * game->zoom) / 2;
 }
 static bool too_fast() {
-    int number_of_events = SDL_PeepEvents(NULL, 1, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
+    const size_t max_events = 3;
+    int number_of_events = SDL_PeepEvents(NULL, max_events, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
     ErrorIFsdl(number_of_events);
-    return number_of_events == 1;
+    return number_of_events == max_events;
 }
 
 void Wspeed(gameWindow *game, bool faster) {
-    if (too_fast())
-        faster = false;
     if (faster) {
         game->autoplay_delay /= 2;
         if (game->autoplay_delay == 0)
@@ -102,9 +101,10 @@ static Uint32 autostep(Uint32 interval, void *game) {
     (void)interval;
     SDL_Event e;
     e.type = SDL_USEREVENT;
-    e.user.code = too_fast() ? 1 : 0;
+    bool throrrling = too_fast();
+    e.user.code = (Sint32)throrrling;
     ErrorIFsdl(SDL_PushEvent(&e));
-    return ((gameWindow *)game)->autoplay_delay;
+    return ((gameWindow *)game)->autoplay_delay * (throrrling ? 3 : 1);
 }
 void Wtoggle_autoplay(gameWindow *game) {
     if (game->autoplay_id == 0) {
