@@ -1,13 +1,13 @@
 #include "File.h"
-#include "debugmalloc.h"
 
+#include "debugmalloc.h"
 
 gameArea Fopen(char *path) {
     char err[] = "Serult fajl!";
-    char* path_with_folder = (char*)malloc((strlen(SAVES_FOLDER)+strlen(path)+1)*sizeof(char));
+    char *path_with_folder = (char *)malloc((strlen(SAVES_FOLDER) + strlen(path) + 1) * sizeof(char));
     ErrorIFnoMemory(path_with_folder);
-    strcpy(path_with_folder,SAVES_FOLDER);
-    strcat(path_with_folder,path);
+    strcpy(path_with_folder, SAVES_FOLDER);
+    strcat(path_with_folder, path);
     FILE *file = fopen(path_with_folder, "r");
     free(path_with_folder);
     ErrorIFnull(file, "Nem sikerult megnyitni a fajlt!");
@@ -31,14 +31,13 @@ gameArea Fopen(char *path) {
     return gamearea;
 }
 void Fsave(char *path, gameArea *gamearea) {
-    char* path_with_folder = (char*)malloc((strlen(SAVES_FOLDER)+strlen(path)+1)*sizeof(char));
+    char *path_with_folder = (char *)malloc((strlen(SAVES_FOLDER) + strlen(path) + 1) * sizeof(char));
     ErrorIFnoMemory(path_with_folder);
-    strcpy(path_with_folder,SAVES_FOLDER);
-    strcat(path_with_folder,path);
+    strcpy(path_with_folder, SAVES_FOLDER);
+    strcat(path_with_folder, path);
     FILE *file = fopen(path_with_folder, "w");
     free(path_with_folder);
-    if (file == NULL)
-    {
+    if (file == NULL) {
         ErrorWarning("Nem sikerult menteni a játékot!");
         return;
     }
@@ -61,9 +60,9 @@ size_t Flist(Fgame_file games[], size_t max_count) {
         if (cnt == max_count) break;
         size_t len = strlen(fajl->d_name);
         if (len > 4 && strcmp((fajl->d_name) + len - 4, ".con") == 0) {
-            games[cnt].path = (char *)malloc((len + 1/* - 4*/) * sizeof(char));
+            games[cnt].path = (char *)malloc((len + 1 /* - 4*/) * sizeof(char));
             ErrorIFnoMemory(games[cnt].path);
-            strcpy(games[cnt].path,fajl->d_name);
+            strcpy(games[cnt].path, fajl->d_name);
             cnt++;
         }
         fajl = readdir(mappa);

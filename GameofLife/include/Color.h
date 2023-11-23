@@ -1,30 +1,27 @@
-#ifndef COLOR_H
-#define COLOR_H
-
-#include <SDL2/SDL.h>
-#include <stdlib.h>
-#include <time.h>
-#include <math.h>
-
 /**
  * @file Color.h
  * @brief This file contains color-related structures and functions.
  */
 
+#ifndef COLOR_H
+#define COLOR_H
+
+#include <SDL2/SDL.h>
+#include <math.h>
+#include <stdlib.h>
+#include <time.h>
+
 /**
- * @enum Colortype
  * @brief An enumeration representing different color types for rendering.
  */
-typedef enum Colortype 
-{ 
-    primary, /**< Primary color type */
-    secondary, /**< Secondary color type */
-    primary_accent, /**< Primary accent color type */
+typedef enum Colortype {
+    primary,         /**< Primary color type */
+    secondary,       /**< Secondary color type */
+    primary_accent,  /**< Primary accent color type */
     secondary_accent /**< Secondary accent color type */
 } Colortype;
 
 /**
- * @struct Color_theme
  * @brief A structure representing a color theme with five colors.
  */
 typedef struct Color_theme {
@@ -41,7 +38,6 @@ typedef struct Color_theme {
  * colors based on a random hue value that has a higher probability to be a warm color.
  * From this hue, a complement color is generated for the secondary. The function ensures
  * that if called multiple times, it returns the same theme.
- *
  * @return A Color_theme structure representing the generated color scheme.
  */
 Color_theme Cinit();

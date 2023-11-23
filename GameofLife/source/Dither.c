@@ -1,4 +1,5 @@
 #include "Dither.h"
+
 #include "debugmalloc.h"
 
 static size_t bit_reverse(size_t szam, size_t bitlen) {

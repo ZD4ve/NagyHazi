@@ -1,4 +1,5 @@
 #include "gameArea.h"
+
 #include "debugmalloc.h"
 
 gameArea Anew(size_t width, size_t height) {
@@ -29,11 +30,11 @@ void Afree(gameArea *gamearea) {
 }
 
 ssize_t Agetage(uint8_t cell) {
-    if(cell == 0) return -1;
+    if (cell == 0) return -1;
     for (size_t i = 0; i < 8; i++) {
         if ((cell & (1 << i)) != 0) return i;
     }
-    return -1;//ez sose kéne hogy lefusson
+    return -1;  // ez sose kéne hogy lefusson
 }
 static bool isalive(uint8_t cell) {
     // megnezzuk, hogy a masodik legkisseb helyirteken 1 van-e
@@ -75,7 +76,7 @@ bool Aback(gameArea *A) {
     return true;
 }
 void Aflipcell(gameArea *A, double x, double y) {
-    if(x >= (double)A->w || y >= (double)A->h || x<0 || y<0) return;
+    if (x >= (double)A->w || y >= (double)A->h || x < 0 || y < 0) return;
     A->area[(int)x][(int)y] ^= 1;
     A->history_lenght = 0;
 }

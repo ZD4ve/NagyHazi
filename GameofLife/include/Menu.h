@@ -8,38 +8,42 @@
 
 #include <stdlib.h>
 
-#include "Graphics.h"
 #include "File.h"
+#include "Graphics.h"
 #include "gameWindow.h"
 
+/**
+ * @brief Number of saves listed in the menu.
+ */
 #define MAX_SAVES 13
+/**
+ * @brief Maximum length for the text inputs.
+ */
 #define INPUT_MAX_LENGHT 20
 
 /**
- * @struct uj_jatek_input
  * @brief Represents the input for a new game.
  */
-typedef struct uj_jatek_input{
-    char name[INPUT_MAX_LENGHT+4]; ///< The name of the new game.
-    SDL_Rect name_rct; ///< The text box for the name input.
-    char width[INPUT_MAX_LENGHT]; ///< The width of the new game.
-    SDL_Rect width_rct; ///< The text box for the width input.
-    char height[INPUT_MAX_LENGHT]; ///< The height of the new game.
-    SDL_Rect height_rct; ///< The text box for the height input.
-    SDL_Rect button; ///< The bounding box for the new game button.
+typedef struct uj_jatek_input {
+    char name[INPUT_MAX_LENGHT + 4];  ///< The name of the new game.
+    SDL_Rect name_rct;                ///< The text box for the name input.
+    char width[INPUT_MAX_LENGHT];     ///< The width of the new game.
+    SDL_Rect width_rct;               ///< The text box for the width input.
+    char height[INPUT_MAX_LENGHT];    ///< The height of the new game.
+    SDL_Rect height_rct;              ///< The text box for the height input.
+    SDL_Rect button;                  ///< The bounding box for the new game button.
 } uj_jatek_input;
 
 /**
- * @struct Menu
  * @brief Represents the menu and its properties.
  * @details This structure should only be created with Minit, and must be deleted with the Mclose function.
  */
-typedef struct Menu{
-    Gwindow G; ///< The graphics window.
-    Fgame_file *saves; ///< The saved games.
-    size_t save_cnt; ///< The count of saved games.
-    gameWindow game_open; ///< The open game window.
-    uj_jatek_input text_input; ///< The input for a new game.
+typedef struct Menu {
+    Gwindow G;                  ///< The graphics window.
+    Fgame_file *saves;          ///< The saved games.
+    size_t save_cnt;            ///< The count of saved games.
+    gameWindow game_open;       ///< The open game window.
+    uj_jatek_input text_input;  ///< The input for a new game.
 } Menu;
 
 /**
@@ -63,8 +67,8 @@ void Mclose(Menu *menu);
 void Mclick(Menu *menu, int x, int y);
 
 /**
- * @brief Handles an event in the menu. Must not be NULL.
- * @param menu Pointer to the menu to handle event.
+ * @brief Handles an event in the menu.
+ * @param menu Pointer to the menu to handle event. Must not be NULL.
  * @param e The event to handle. Must not be NULL.
  */
 void Mevent(Menu *menu, SDL_Event *e);

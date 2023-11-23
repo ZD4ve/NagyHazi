@@ -6,21 +6,21 @@
 #ifndef FILE_H
 #define FILE_H
 
-#include <stdlib.h>
 #include <dirent.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "Error.h"
 #include "gameArea.h"
 
-#define SAVES_FOLDER "saved/" ///< Directory for saved games.
+#define SAVES_FOLDER "saved/"  ///< Directory for saved games.
 
 /**
  * @brief Structure representing a game file.
  */
-typedef struct Fgame_file{
-    char *path; ///< Path to the game file.
-    SDL_Rect location; ///< Location of the opening button on screen.
+typedef struct Fgame_file {
+    char *path;         ///< Path to the game file.
+    SDL_Rect location;  ///< Location of the opening button on screen.
 } Fgame_file;
 
 /**

@@ -4,17 +4,17 @@
 #define COLOR_WHEEL_RANGE 120
 
 static SDL_Color HSLtoRGB(double H, double S, double L);
-static double eloszlas(double x) {
-    //return x;
-    return x * x * (x<0?-1:1);
-    //return x * x * x;  
+static double distribution(double x) {
+    // return x;
+    return x * x * (x < 0 ? -1 : 1);
+    // return x * x * x;
 }
 
 Color_theme Cinit() {
     static double PrimHue = -1;
     if (PrimHue == -1) {
         srand(time(NULL));
-        PrimHue = COLOR_WHEEL_RANGE/2 * eloszlas((rand() / (double)RAND_MAX) * 2 - 1) + COLOR_WHEEL_OFFSET;
+        PrimHue = COLOR_WHEEL_RANGE / 2 * distribution((rand() / (double)RAND_MAX) * 2 - 1) + COLOR_WHEEL_OFFSET;
     }
 
     Color_theme new;

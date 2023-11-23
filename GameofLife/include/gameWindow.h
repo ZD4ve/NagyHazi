@@ -7,25 +7,25 @@
 #define GAMEWINDOW_H
 
 #include <stdbool.h>
+
+#include "File.h"
 #include "Graphics.h"
 #include "gameArea.h"
-#include "File.h"
 
 /**
- * @struct gameWindow
  * @brief Represents the game window and its properties.
  * @details This structure should only be created with a function, and must be deleted with the Wclose function.
  */
 typedef struct gameWindow {
-    gameArea A; ///< The game area.
-    Gwindow G; ///< The graphics window.
-    char *name; ///< The name of the game window.
-    SDL_Texture *pre_rendered_cells; ///< The pre-rendered cells.
-    double zoom; ///< The zoom level.
-    ssize_t x_screen_offset; ///< The x-coordinate screen offset.
-    ssize_t y_screen_offset; ///< The y-coordinate screen offset.
-    SDL_TimerID autoplay_id; ///< The autoplay timer ID.
-    Uint32 autoplay_delay; ///< The autoplay delay.
+    gameArea A;                       ///< The game area.
+    Gwindow G;                        ///< The graphics window.
+    char *name;                       ///< The name of the game window.
+    SDL_Texture *pre_rendered_cells;  ///< The pre-rendered cells.
+    double zoom;                      ///< The zoom level.
+    ssize_t x_screen_offset;          ///< The x-coordinate screen offset.
+    ssize_t y_screen_offset;          ///< The y-coordinate screen offset.
+    SDL_TimerID autoplay_id;          ///< The autoplay timer ID.
+    Uint32 autoplay_delay;            ///< The autoplay delay.
 } gameWindow;
 
 /**

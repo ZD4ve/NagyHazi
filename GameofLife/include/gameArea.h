@@ -8,22 +8,21 @@
 #define GAMEAREA_H
 
 #include <SDL2/SDL.h>
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "Error.h"
 
 /**
- * @struct gameArea
  * @brief Represents the game area and its properties.
  * @details This structure should only be created with a function,
  * and must be deleted with the Afree function.
  */
 typedef struct gameArea {
-    size_t w;      ///< Width of the game area.
-    size_t h;      ///< Height of the game area.
-    uint8_t **area;  ///< Array representing the game area, least significant bit is the current state, from that the next 7 bits are the history of the cell.
-    uint8_t history_lenght; ///< History length of the game area, maximum 7.
+    size_t w;                ///< Width of the game area.
+    size_t h;                ///< Height of the game area.
+    uint8_t **area;          ///< Array representing the game area, least significant bit is the current state, from that the next 7 bits are the history of the cell.
+    uint8_t history_lenght;  ///< History length of the game area, maximum 7.
 } gameArea;
 
 /**

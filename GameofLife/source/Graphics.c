@@ -27,14 +27,14 @@ Gwindow Gnew(char title[], int width, int height, bool resizable) {
     ErrorIFnull(window.win, "Nem hozhato letre az ablak!");
     window.ren = SDL_CreateRenderer(window.win, -1, SDL_RENDERER_SOFTWARE);
     ErrorIFnull(window.ren, "Nem hozhato letre a megjelenito!");
-    window.font_big = TTF_OpenFont("asset/PixelifySans.ttf", 72);
+    window.font_big = TTF_OpenFont("assets/PixelifySans.ttf", 72);
     ErrorIFnull(window.font_big, "Nem sikerult megnyitni a fontot!");
-    window.font_reg = TTF_OpenFont("asset/born2bsporty-fs.otf", 24);
+    window.font_reg = TTF_OpenFont("assets/born2bsporty-fs.otf", 24);
     ErrorIFnull(window.font_reg, "Nem sikerult megnyitni a fontot!");
     window.colors = Cinit();
-    SDL_Surface *icon = SDL_LoadBMP("asset/icon.bmp");
-    ErrorIFnull(icon,"Nem sikerult betolteni az icont!")
-    SDL_SetWindowIcon(window.win,icon);
+    SDL_Surface *icon = SDL_LoadBMP("assets/icon.bmp");
+    ErrorIFnull(icon, "Nem sikerult betolteni az icont!");
+    SDL_SetWindowIcon(window.win, icon);
     SDL_FreeSurface(icon);
     return window;
 }
@@ -97,7 +97,7 @@ void Gtextbox(Gwindow *window, char *text, SDL_Rect *location, Colortype col, si
 
 SDL_Texture *Gpre_render_cells(Gwindow *window) {
     Uint32 format = SDL_GetWindowPixelFormat(window->win);
-    ErrorIFtrue(format==SDL_PIXELFORMAT_UNKNOWN,"SDL hiba!");
+    ErrorIFtrue(format == SDL_PIXELFORMAT_UNKNOWN, "SDL hiba!");
     SDL_Texture *tex = SDL_CreateTexture(
         window->ren,
         format,
@@ -150,7 +150,7 @@ void Ginput_text(Gwindow *window, char *dest, size_t lenght, SDL_Rect bounding_b
         SDL_RenderPresent(window->ren);
 
         SDL_Event e;
-        ErrorIFtrue(SDL_WaitEvent(&e)==0,"Event hiba!");
+        ErrorIFtrue(SDL_WaitEvent(&e) == 0, "Event hiba!");
         switch (e.type) {
             /* Kulonleges karakter */
             case SDL_KEYDOWN:

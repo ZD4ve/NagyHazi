@@ -1,4 +1,5 @@
 #include "Menu.h"
+
 #include "debugmalloc.h"
 
 #define BUTTON_HEIGHT 40
@@ -44,9 +45,9 @@ static void draw_new_game_options(Menu *menu) {
 static void draw_keys(Menu *menu) {
     SDL_Rect target = {BUTTON_WIDTH + 60, 4 * (BUTTON_HEIGHT + 10) + 150, BUTTON_HEIGHT, BUTTON_HEIGHT};
     char tips[9][20] = {"One step", "One step back", "Speed up", "Slow down", "Reset Zoom", "Start the sim", "Place cell", "Zoom", "Save"};
-    char keys[9][20] = {"→", "←", " ↑ ", " ↓ "," R ", "SPACE", "Click", "Wheel", "Ctrl + S"};
+    char keys[9][20] = {"→", "←", " ↑ ", " ↓ ", " R ", "SPACE", "Click", "Wheel", "Ctrl + S"};
     for (size_t i = 0; i < 9; i++) {
-        if (i >= 5) target.w = BUTTON_WIDTH/2;
+        if (i >= 5) target.w = BUTTON_WIDTH / 2;
         Gprint(&menu->G, tips[i], &target, primary);
         target.x += BUTTON_WIDTH + 10;
         Gtextbox(&menu->G, keys[i], &target, primary, 5);

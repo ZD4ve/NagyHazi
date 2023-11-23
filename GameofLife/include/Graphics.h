@@ -16,7 +16,6 @@
 #include "Error.h"
 
 /**
- * @def CELL_SIZE
  * @brief The size of a rendered cell in pixels.
  * @details It should be a power of 2. Smaller values will result in better performance, but worse quality.
  */
@@ -29,7 +28,8 @@
 typedef struct Gwindow {
     SDL_Window *win;     ///< The SDL window.
     SDL_Renderer *ren;   ///< The SDL renderer.
-    size_t w, h;         ///< The width and height of the window.
+    size_t w;            ///< The width of the window.
+    size_t h;            ///< The height of the window.
     TTF_Font *font_big;  ///< The font used for the title.
     TTF_Font *font_reg;  ///< The font used for regular text.
     Color_theme colors;  ///< The color theme.
@@ -106,8 +106,9 @@ void Gtextbox(Gwindow *window, char *text, SDL_Rect *location, Colortype col, si
  * @brief Pre-renders cells in the graphics window.
  * @param window Pointer to the game window. Must not be NULL.
  * @return The texture of the pre-rendered cells.
- * @remark It uses the ordered dithering algorithm to render the fading effect.
- * @file Dither.h
+ * @remark It uses the ordered dithering algorithm (
+ * @ref Dither.h
+ * ) to render the fading effect.
  */
 SDL_Texture *Gpre_render_cells(Gwindow *window);
 
