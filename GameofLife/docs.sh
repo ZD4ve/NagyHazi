@@ -5,5 +5,5 @@ fi
 cd latex
 make pdf
 cd ..
-mv latex/refman.pdf ../documentation.pdf
+mv latex/refman.pdf "../Code documentation.pdf"
 rm latex -r

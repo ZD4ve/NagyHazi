@@ -70,6 +70,7 @@ void Mclick(Menu *menu, int x, int y);
  * @brief Handles an event in the menu.
  * @param menu Pointer to the menu to handle event. Must not be NULL.
  * @param e The event to handle. Must not be NULL.
+ * @remarks It closes the program as intended if the user closes the window.
  */
 void Mevent(Menu *menu, SDL_Event *e);
 
