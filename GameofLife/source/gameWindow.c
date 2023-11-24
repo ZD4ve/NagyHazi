@@ -1,7 +1,7 @@
 #include "gameWindow.h"
 
-#define DEFAULT_WIDTH 1000
-#define DEFAULT_HEIGHT 500
+#define DEFAULT_WIDTH 960
+#define DEFAULT_HEIGHT 720
 // #define LOG_FPS
 
 static double kissebb(double a, double b) {
@@ -46,9 +46,17 @@ void Wclick(gameWindow *game, int x, int y) {
 }
 
 void Wdraw(gameWindow *game, bool all_cells) {
-    Gset_color(&game->G, game->G.colors.bg);
-    if (all_cells)
+    if (all_cells) {
+        Gset_color(&game->G, game->G.colors.bg);
         ErrorIFsdl(SDL_RenderClear(game->G.ren));
+        Gset_color(&game->G, game->G.colors.secacc);
+        SDL_Rect game_border = {
+            game->x_screen_offset - 1,
+            game->y_screen_offset - 1,
+            game->A.w * CELL_SIZE * game->zoom + 2,
+            game->A.h * CELL_SIZE * game->zoom + 2};
+        SDL_RenderDrawRect(game->G.ren, &game_border);
+    }
     SDL_FPoint target_point = {0.0, 0.0};
     SDL_Rect target = {0, 0, CELL_SIZE * game->zoom + 1, CELL_SIZE * game->zoom + 1};
     SDL_Rect source = {0, 0, CELL_SIZE, CELL_SIZE};
@@ -61,7 +69,7 @@ void Wdraw(gameWindow *game, bool all_cells) {
                 target.x = target_point.x;
                 target.y = target_point.y;
                 ErrorIFsdl(SDL_RenderCopy(game->G.ren, game->pre_rendered_cells, &source, &target));
-                // a rendercopy eldobja magatol a kijelzon kivuli rajzolasoka
+                // a rendercopy eldobja magatol a kijelzon kivuli rajzolasokat
             }
         }
     }
@@ -83,12 +91,11 @@ void Wresetzoom(gameWindow *game) {
     game->y_screen_offset = (win_h - game->A.h * CELL_SIZE * game->zoom) / 2;
 }
 static bool too_fast() {
-    const size_t max_events = 3;
+    const size_t max_events = 5;
     int number_of_events = SDL_PeepEvents(NULL, max_events, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
     ErrorIFsdl(number_of_events);
     return number_of_events == max_events;
 }
-
 void Wspeed(gameWindow *game, bool faster) {
     if (faster) {
         game->autoplay_delay /= 2;
@@ -102,10 +109,10 @@ static Uint32 autostep(Uint32 interval, void *game) {
     (void)interval;
     SDL_Event e;
     e.type = SDL_USEREVENT;
-    bool throrrling = too_fast();
-    e.user.code = (Sint32)throrrling;
+    bool throttling = too_fast();
+    e.user.code = (Sint32)throttling;
     ErrorIFsdl(SDL_PushEvent(&e));
-    return ((gameWindow *)game)->autoplay_delay * (throrrling ? 3 : 1);
+    return ((gameWindow *)game)->autoplay_delay * (throttling ? 5 : 1);
 }
 void Wtoggle_autoplay(gameWindow *game) {
     if (game->autoplay_id == 0) {
