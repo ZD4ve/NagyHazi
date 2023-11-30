@@ -38,7 +38,12 @@ ssize_t Agetage(uint8_t cell) {
 }
 static bool isalive(uint8_t cell) {
     // megnezzuk, hogy a masodik legkisseb helyirteken 1 van-e
-    return (cell >> 1) & 1;
+    return (cell & 2);
+    /*
+    C99 and C11 §6.3.1.2/1 “When any scalar value is converted to _Bool,
+    the result is 0 if the value compares equal to 0; otherwise, the result is 1.”
+    Vagyis a 2-es ertekbol 1 lesz, nem kell kulon vizsgalni
+    */
 }
 static bool isvaidcord(ssize_t x, ssize_t y, size_t w, size_t h) {
     return 0 <= x && (size_t)x < w &&
@@ -53,7 +58,9 @@ void Astep(gameArea *A) {
     for (size_t x = 0; x < A->w; x++) {
         for (size_t y = 0; y < A->h; y++) {
             size_t sum = 0;
+            #pragma GCC unroll 3
             for (ssize_t x_offset = -1; x_offset <= 1; x_offset++) {
+                #pragma GCC unroll 3
                 for (ssize_t y_offset = -1; y_offset <= 1; y_offset++) {
                     if (x_offset == 0 && y_offset == 0) continue;
                     sum += isvaidcord(x + x_offset, y + y_offset, A->w, A->h) &&
