@@ -1,1 +1,1 @@
-wsl -d Arch code ./GameofLife
+wsl code ./GameofLife
